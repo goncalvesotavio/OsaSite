@@ -1,0 +1,133 @@
+.safeArea, .loadingContainer {
+    background-color: #F4F1E9;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.loadingContainer {
+    justify-content: center;
+    align-items: center;
+}
+
+.spinner {
+    width: 48px;
+    height: 48px;
+    border: 5px solid #FFF;
+    border-bottom-color: #5C8E8B;
+    border-radius: 50%;
+    animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.circle { position: absolute; opacity: 0.7; z-index: 0; border-radius: 50%; }
+.circleOne { width: 200px; height: 200px; background-color: #D9A583; top: -50px; left: -80px; }
+.circleTwo { width: 300px; height: 300px; background-color: #9FB5A8; top: 100px; right: -120px; }
+.circleThree { width: 250px; height: 250px; background-color: #8C5F54; bottom: 130px; left: -100px; }
+.circleFour { width: 350px; height: 350px; background-color: #D9C47E; bottom: -130px; right: -100px; }
+
+.header {
+    display: flex;
+    align-items: center;
+    padding: 20px 20px 10px;
+    z-index: 1;
+}
+
+.backButton {
+    margin-right: 15px;
+    padding: 5px;
+    color: #333;
+}
+
+.headerIcon {
+    width: 35px;
+    height: 35px;
+    margin-right: 15px;
+    object-fit: contain;
+}
+
+.headerTitle {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin: 0;
+}
+
+.content {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    z-index: 1;
+}
+
+.card {
+    background-color: #FFFFFF;
+    width: 100%;
+    max-width: 500px;
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.inputGroup {
+    margin-bottom: 25px;
+}
+
+.label {
+    display: block;
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.input {
+    background-color: #F5F5F5;
+    border: 1px solid #E0E0E0;
+    border-radius: 10px;
+    padding: 12px 15px;
+    font-size: 16px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.uploadButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #E0E0E0;
+    border-radius: 10px;
+    padding: 15px;
+    width: 100%;
+    border: none;
+    cursor: pointer;
+}
+
+.uploadButtonText {
+    margin-left: 10px;
+    font-size: 16px;
+    color: #333;
+    font-weight: 500;
+}
+
+.saveButton {
+    background-color: #5C8E8B;
+    border-radius: 15px;
+    padding: 18px;
+    width: 100%;
+    border: none;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.saveButtonText {
+    color: #FFFFFF;
+    font-size: 18px;
+    font-weight: bold;
+}

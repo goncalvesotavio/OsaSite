@@ -1,0 +1,161 @@
+.safeArea, .loadingContainer {
+    flex: 1;
+    background-color: #F4F1E9;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.loadingContainer {
+    justify-content: center;
+    align-items: center;
+}
+
+.spinner {
+    width: 48px;
+    height: 48px;
+    border: 5px solid #FFF;
+    border-bottom-color: #5C8E8B;
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.container {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.circle {
+    position: absolute;
+    opacity: 0.7;
+    border-radius: 50%;
+}
+
+.circleOne { width: 200px; height: 200px; background-color: #D9A583; top: -50px; left: -80px; }
+.circleTwo { width: 300px; height: 300px; background-color: #9FB5A8; top: 100px; right: -120px; }
+.circleThree { width: 250px; height: 250px; background-color: #8C5F54; bottom: 130px; left: -100px; }
+.circleFour { width: 350px; height: 350px; background-color: #D9C47E; bottom: -130px; right: -100px; }
+
+.content {
+    flex: 1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    z-index: 1;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-top: 10px;
+}
+
+.backButton {
+    margin-right: 15px;
+    padding: 5px;
+    color: #333;
+}
+
+.headerIcon {
+    margin-right: 10px;
+    color: #333;
+}
+
+.headerTitle {
+    font-size: 28px;
+    font-weight: bold;
+    color: #333;
+    margin: 0;
+}
+
+.searchContainer {
+    display: flex;
+    align-items: center;
+    background-color: #FFF;
+    border-radius: 10px;
+    padding: 10px 15px;
+    margin-bottom: 20px;
+    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.searchInput {
+    flex: 1;
+    font-size: 16px;
+    color: #333;
+    border: none;
+    outline: none;
+}
+
+.searchIcon {
+    margin-left: 10px;
+    color: #888;
+}
+
+.filterContainer {
+    display: flex;
+    background-color: #E0E0E0;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+.filterButton {
+    flex: 1;
+    padding: 10px;
+    align-items: center;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.filterButtonActive {
+    background-color: #5C8E8B;
+}
+
+.filterButtonText {
+    font-size: 16px;
+    font-weight: 500;
+    color: #666;
+}
+
+.filterButtonTextActive {
+    color: #FFF;
+}
+
+.pedidosList {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+.pedidoItem {
+    background-color: #FFFFFF;
+    padding: 15px 20px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05);
+    text-decoration: none;
+    display: block;
+    transition: transform 0.2s ease;
+}
+
+.pedidoItem:hover {
+    transform: translateY(-2px);
+}
+
+.pedidoNome {
+    font-size: 18px;
+    color: #333;
+}

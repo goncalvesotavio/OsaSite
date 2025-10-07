@@ -1,0 +1,116 @@
+.safeArea {
+  flex: 1;
+  background-color: #F4F1E9;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  overflow-x: hidden;
+}
+
+.container {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+.circle {
+  position: absolute;
+  opacity: 0.7;
+  border-radius: 50%;
+}
+
+.circleOne { width: 250px; height: 250px; background-color: #D9A583; top: -80px; left: -80px; }
+.circleTwo { width: 300px; height: 300px; background-color: #9FB5A8; top: 100px; right: -120px; }
+.circleThree { width: 250px; height: 250px; background-color: #8C5F54; bottom: 80px; left: -100px; }
+.circleFour { width: 350px; height: 350px; background-color: #D9C47E; bottom: -150px; right: -100px; }
+
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0 20px;
+  z-index: 1;
+}
+
+.title {
+  font-size: 26px;
+  font-weight: 600;
+  color: #333;
+  text-align: center;
+  margin-bottom: 50px;
+  white-space: pre-line;
+}
+
+.buttonGrid {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.button {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background-color: #FFFFFF;
+  padding: 15px 25px;
+  border-radius: 30px;
+  width: 350px;
+  max-width: 100%;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  transition: transform 0.2s ease-in-out;
+}
+
+.button:hover {
+  transform: translateY(-3px);
+}
+
+.buttonIconImage {
+  width: 35px;
+  height: 35px;
+  margin-right: 20px;
+  object-fit: contain;
+}
+
+.buttonText {
+  font-size: 18px;
+  font-weight: 500;
+  color: #333;
+}
+
+a {
+  text-decoration: none;
+}
+
+/* Regras para telas maiores (tablets e desktops) */
+@media (min-width: 768px) {
+  .title {
+    font-size: 38px;
+  }
+  .buttonGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    max-width: 800px;
+  }
+  .button {
+    width: 100%;
+  }
+}
+
+/* Regras para telas ainda maiores (desktops largos) */
+@media (min-width: 1200px) {
+  .buttonGrid {
+    grid-template-columns: repeat(3, 1fr);
+    max-width: 1200px;
+  }
+  .title {
+    font-size: 42px;
+  }
+}

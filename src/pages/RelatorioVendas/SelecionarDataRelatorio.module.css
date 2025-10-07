@@ -1,0 +1,141 @@
+.safeArea {
+    background-color: #F4F1E9;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.circle {
+    position: absolute;
+    opacity: 0.7;
+    z-index: 0;
+    border-radius: 50%;
+}
+
+.circleOne {
+    width: 200px;
+    height: 200px;
+    background-color: #D9A583;
+    top: -50px;
+    left: -80px;
+}
+
+.circleTwo {
+    width: 300px;
+    height: 300px;
+    background-color: #9FB5A8;
+    top: 100px;
+    right: -120px;
+}
+
+.circleThree {
+    width: 250px;
+    height: 250px;
+    background-color: #8C5F54;
+    bottom: 130px;
+    left: -100px;
+}
+
+.circleFour {
+    width: 350px;
+    height: 350px;
+    background-color: #D9C47E;
+    bottom: -130px;
+    right: -100px;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    padding: 20px 20px 10px;
+    z-index: 1;
+}
+
+.backButton {
+    margin-right: 15px;
+    padding: 5px;
+    color: #333;
+}
+
+.headerIcon {
+    margin-right: 10px;
+    color: #333;
+}
+
+.headerTitle {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin: 0;
+}
+
+.content {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    z-index: 1;
+}
+
+.card {
+    background-color: #FFFFFF;
+    width: 100%;
+    max-width: 450px;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.cardTitle {
+    font-size: 20px;
+    font-weight: 500;
+    color: #333;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.dateButton {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 15px 0;
+    border-bottom: 1px solid #EEE;
+    margin-bottom: 20px;
+    background: none;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.dateLabel {
+    font-size: 18px;
+    color: #555;
+    font-weight: 600;
+}
+
+.dateValue {
+    font-size: 18px;
+    color: #333;
+}
+
+.generateButton {
+    background-color: #5C8E8B;
+    padding: 15px 40px;
+    border-radius: 30px;
+    margin-top: 20px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    border: none;
+    cursor: pointer;
+}
+
+.generateButtonText {
+    color: #FFF;
+    font-size: 18px;
+    font-weight: bold;
+}
