@@ -1,15 +1,16 @@
 .safeArea {
-  flex: 1;
   background-color: #F4F1E9;
-  display: flex;
-  flex-direction: column;
   height: 100vh;
   width: 100vw;
-  overflow-x: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
 }
 
 .container {
-  flex: 1;
+  width: 100%;
+  height: 100%;
   position: relative;
   overflow: hidden;
 }
@@ -18,33 +19,66 @@
   position: absolute;
   opacity: 0.7;
   border-radius: 50%;
+  z-index: 0;
+  transition: all 0.5s ease-out;
 }
 
-.circleOne { width: 250px; height: 250px; background-color: #D9A583; top: -80px; left: -80px; }
-.circleTwo { width: 300px; height: 300px; background-color: #9FB5A8; top: 100px; right: -120px; }
-.circleThree { width: 250px; height: 250px; background-color: #8C5F54; bottom: 80px; left: -100px; }
-.circleFour { width: 350px; height: 350px; background-color: #D9C47E; bottom: -150px; right: -100px; }
+.circleOne {
+  width: 350px;
+  height: 350px;
+  background-color: #D9A583;
+  top: -80px;
+  left: -80px;
+}
+
+.circleTwo {
+  width: 300px;
+  height: 300px;
+  background-color: #9FB5A8;
+  top: 100px;
+  right: -120px;
+}
+
+.circleThree {
+  width: 250px;
+  height: 250px;
+  background-color: #8C5F54;
+  bottom: 80px;
+  left: -100px;
+}
+
+.circleFour {
+  width: 350px;
+  height: 350px;
+  background-color: #D9C47E;
+  bottom: -150px;
+  right: -100px;
+}
 
 .content {
-  flex: 1;
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 0 20px;
+  padding: 20px;
+  position: relative;
   z-index: 1;
 }
 
+.titleContainer {
+  margin-bottom: 50px;
+}
+
 .title {
-  font-size: 26px;
+  font-size: 28px;
   font-weight: 600;
   color: #333;
   text-align: center;
-  margin-bottom: 50px;
   white-space: pre-line;
 }
 
-.buttonGrid {
+.buttonContainer {
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -54,7 +88,6 @@
 
 .button {
   display: flex;
-  flex-direction: row;
   align-items: center;
   background-color: #FFFFFF;
   padding: 15px 25px;
@@ -66,6 +99,8 @@
   cursor: pointer;
   text-align: left;
   transition: transform 0.2s ease-in-out;
+  text-decoration: none;
+  box-sizing: border-box;
 }
 
 .button:hover {
@@ -85,32 +120,122 @@
   color: #333;
 }
 
-a {
-  text-decoration: none;
-}
+@media (min-width: 1024px) {
+  .content {
+    flex-direction: row;
+    justify-content: center;
+    gap: clamp(4rem, 8vw, 10rem);
+    padding: 0 5%;
+  }
 
-/* Regras para telas maiores (tablets e desktops) */
-@media (min-width: 768px) {
+  .titleContainer {
+    flex: 1;
+    max-width: 600px;
+    margin-bottom: 0;
+  }
+
   .title {
-    font-size: 38px;
+    font-size: clamp(2.5rem, 5vw, 3.8rem);
+    text-align: left;
+    line-height: 1.2;
   }
-  .buttonGrid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    max-width: 800px;
+
+  .buttonContainer {
+    flex: 1;
+    max-width: 450px;
   }
+
   .button {
     width: 100%;
+    padding: clamp(1.25rem, 1.5vw, 1.375rem) clamp(1.9rem, 2vw, 2.18rem);
+  }
+
+  .buttonText {
+    font-size: clamp(1.15rem, 1.3vw, 1.25rem);
+  }
+
+  .buttonIconImage {
+    width: clamp(38px, 3vw, 40px);
+    height: clamp(38px, 3vw, 40px);
+  }
+
+  .circleOne {
+    transform: scale(1.4);
+    top: -15%;
+    left: -10%;
+  }
+
+  .circleTwo {
+    transform: scale(1.5);
+    top: -10%;
+    right: -9%;
+  }
+
+  .circleThree {
+    transform: scale(1.6);
+    bottom: -15%;
+    left: -1%;
+  }
+
+  .circleFour {
+    transform: scale(1.7);
+    bottom: -20%;
+    right: -8%;
   }
 }
 
-/* Regras para telas ainda maiores (desktops largos) */
-@media (min-width: 1200px) {
-  .buttonGrid {
-    grid-template-columns: repeat(3, 1fr);
-    max-width: 1200px;
+@media (min-width: 1143px) {
+  .button {
+    padding: 1.375rem 2.18rem;
   }
+
+  .buttonText {
+    font-size: 1.25rem;
+  }
+
+  .buttonIconImage {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+@media (min-width: 1481px) {
+  .circleOne {
+    transform: scale(1.8);
+  }
+}
+
+@media (max-width: 428px) {
+
+  .circleOne,
+  .circleTwo,
+  .circleThree,
+  .circleFour {
+    transform: scale(0.7);
+  }
+
+
+  .circleOne {
+    top: -120px;
+    left: -120px;
+  }
+
+  .circleTwo {
+    top: 40px;
+    right: -150px;
+  }
+
+  .circleThree {
+    bottom: 50px;
+    left: -140px;
+  }
+
+  .circleFour {
+    bottom: -180px;
+    right: -130px;
+  }
+
   .title {
-    font-size: 42px;
+    font-size: 24px;
   }
 }

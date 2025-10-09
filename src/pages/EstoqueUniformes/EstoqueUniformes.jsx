@@ -1,10 +1,10 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { FaArrowLeft, FaSearch } from 'react-icons/fa';
-import { fetchUniformes } from '../../lib/fetchUniformes';
+import { fetchUniformes } from '@/lib/fetchUniformes.js';
 import styles from './EstoqueUniformes.module.css';
 
-import UniformeIcon from '../../assets/uniformes gestao.png';
+import UniformeIcon from '@/assets/uniformes gestao.png';
 
 const categorias = [
     { label: "Todos", value: "Todos" },
@@ -68,41 +68,43 @@ export default function EstoqueUniformes() {
             <div className={`${styles.circle} ${styles.circleThree}`} />
             <div className={`${styles.circle} ${styles.circleFour}`} />
 
-            <header className={styles.header}>
-                <Link to="/" className={styles.backButton}><FaArrowLeft size={24} /></Link>
-                <img src={UniformeIcon} alt="Ícone de Uniformes" className={styles.headerIcon} />
-                <h1 className={styles.headerTitle}>Estoque de Uniformes</h1>
-            </header>
+            <div className={styles.content}>
+                <header className={styles.header}>
+                    <Link to="/" className={styles.backButton}><FaArrowLeft size={24} /></Link>
+                    <img src={UniformeIcon} alt="Ícone de Uniformes" className={styles.headerIcon} />
+                    <h1 className={styles.headerTitle}>Estoque de Uniformes</h1>
+                </header>
 
-            <div className={styles.searchContainer}>
-                <input
-                    type="text"
-                    className={styles.searchInput}
-                    placeholder="Pesquise aqui..."
-                    value={textoPesquisa}
-                    onChange={e => setTextoPesquisa(e.target.value)}
-                />
-                <FaSearch size={20} className={styles.searchIcon} />
-            </div>
+                <div className={styles.searchContainer}>
+                    <input
+                        type="text"
+                        className={styles.searchInput}
+                        placeholder="Pesquise aqui..."
+                        value={textoPesquisa}
+                        onChange={e => setTextoPesquisa(e.target.value)}
+                    />
+                    <FaSearch size={20} className={styles.searchIcon} />
+                </div>
 
-            <div className={styles.categoryContainer}>
-                {categorias.map(categoria => (
-                    <button
-                        key={categoria.label}
-                        className={`${styles.categoryButton} ${JSON.stringify(filtroCategoria) === JSON.stringify(categoria.value) ? styles.categoryButtonActive : ''}`}
-                        onClick={() => setFiltroCategoria(categoria.value)}
-                    >
-                        <span className={`${styles.categoryButtonText} ${JSON.stringify(filtroCategoria) === JSON.stringify(categoria.value) ? styles.categoryButtonTextActive : ''}`}>
-                            {categoria.label}
-                        </span>
-                    </button>
-                ))}
-            </div>
+                <div className={styles.categoryContainer}>
+                    {categorias.map(categoria => (
+                        <button
+                            key={categoria.label}
+                            className={`${styles.categoryButton} ${JSON.stringify(filtroCategoria) === JSON.stringify(categoria.value) ? styles.categoryButtonActive : ''}`}
+                            onClick={() => setFiltroCategoria(categoria.value)}
+                        >
+                            <span className={`${styles.categoryButtonText} ${JSON.stringify(filtroCategoria) === JSON.stringify(categoria.value) ? styles.categoryButtonTextActive : ''}`}>
+                                {categoria.label}
+                            </span>
+                        </button>
+                    ))}
+                </div>
 
-            <div className={styles.listContainer}>
-                {uniformesFiltrados.map(item => (
-                    <UniformeCard key={item.id_uniforme} item={item} />
-                ))}
+                <div className={styles.listContainer}>
+                    {uniformesFiltrados.map(item => (
+                        <UniformeCard key={item.id_uniforme} item={item} />
+                    ))}
+                </div>
             </div>
         </main>
     );

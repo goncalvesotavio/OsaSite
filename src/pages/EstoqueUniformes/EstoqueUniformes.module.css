@@ -1,8 +1,11 @@
-.safeArea, .loadingContainer {
+.safeArea,
+.loadingContainer {
     background-color: #F4F1E9;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    position: relative;
+    overflow-x: hidden;
 }
 
 .loadingContainer {
@@ -16,33 +19,82 @@
     border: 5px solid #FFF;
     border-bottom-color: #5C8E8B;
     border-radius: 50%;
-    display: inline-block;
-    box-sizing: border-box;
     animation: rotation 1s linear infinite;
 }
 
 @keyframes rotation {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
-.circle { position: absolute; opacity: 0.7; z-index: 0; border-radius: 50%; }
-.circleOne { width: 200px; height: 200px; background-color: #D9A583; top: -50px; left: -80px; }
-.circleTwo { width: 300px; height: 300px; background-color: #9FB5A8; top: 100px; right: -120px; }
-.circleThree { width: 250px; height: 250px; background-color: #8C5F54; bottom: 130px; left: -100px; }
-.circleFour { width: 350px; height: 350px; background-color: #D9C47E; bottom: -130px; right: -100px; }
+.circle {
+    position: absolute;
+    opacity: 0.7;
+    z-index: 0;
+    border-radius: 50%;
+    transition: all 0.5s ease-out;
+}
+
+.circleOne {
+    width: 250px;
+    height: 250px;
+    background-color: #D9A583;
+    top: -80px;
+    left: -120px;
+}
+
+.circleTwo {
+    width: 300px;
+    height: 300px;
+    background-color: #9FB5A8;
+    top: -100px;
+    right: -120px;
+}
+
+.circleThree {
+    width: 350px;
+    height: 350px;
+    background-color: #8C5F54;
+    bottom: 1px;
+    left: -150px;
+}
+
+.circleFour {
+    width: 350px;
+    height: 350px;
+    background-color: #D9C47E;
+    bottom: 200px;
+    right: -100px;
+}
+
+.content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    z-index: 1;
+    padding: 20px;
+    box-sizing: border-box;
+}
 
 .header {
     display: flex;
     align-items: center;
-    padding: 20px 20px 10px;
-    z-index: 1;
+    padding-top: 20px;
+    padding-bottom: 10px;
 }
 
 .backButton {
     margin-right: 15px;
     padding: 5px;
     color: #333;
+    background: none;
+    border: none;
+    cursor: pointer;
 }
 
 .headerIcon {
@@ -63,10 +115,9 @@
     align-items: center;
     background-color: #FFF;
     border-radius: 15px;
-    margin: 0 20px 15px;
     padding: 10px 15px;
+    margin-bottom: 15px;
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-    z-index: 1;
 }
 
 .searchInput {
@@ -85,10 +136,9 @@
 .categoryContainer {
     display: flex;
     overflow-x: auto;
-    padding: 10px 20px;
-    scrollbar-width: none; 
-    -ms-overflow-style: none; 
-    z-index: 1;
+    padding: 10px 0;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
 }
 
 .categoryContainer::-webkit-scrollbar {
@@ -125,9 +175,8 @@
     flex: 1;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 15px;
-    padding: 10px 20px;
-    z-index: 1;
+    gap: 20px;
+    padding-top: 10px;
 }
 
 .card {
@@ -168,4 +217,34 @@
     font-size: 14px;
     font-weight: bold;
     color: #FFF;
+}
+
+@media (min-width: 1024px) {
+    .content {
+        max-width: 1600px;
+        margin: 0 auto;
+        padding: 40px 80px;
+    }
+
+    .listContainer {
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 30px;
+    }
+
+    .circleOne {
+        transform: scale(1.2);
+    }
+
+    .circleTwo {
+        transform: scale(1.0);
+    }
+
+    .circleThree {
+        transform: scale(1.2);
+        bottom: 35px;
+    }
+
+    .circleFour {
+        transform: scale(1.3);
+    }
 }

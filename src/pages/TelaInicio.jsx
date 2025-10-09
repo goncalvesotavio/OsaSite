@@ -8,15 +8,6 @@ import armariosIcon from '@/assets/armarios gestao.png';
 import relatorioIcon from '@/assets/relatorio.png';
 import contratoIcon from '@/assets/controle-contrato.png';
 
-const MenuButton = ({ iconSource, title }) => {
-  return (
-    <button className={styles.button}>
-      <img src={iconSource} alt="" className={styles.buttonIconImage} />
-      <span className={styles.buttonText}>{title}</span>
-    </button>
-  );
-};
-
 export default function TelaInicio() {
   return (
     <main className={styles.safeArea}>
@@ -27,29 +18,32 @@ export default function TelaInicio() {
         <div className={`${styles.circle} ${styles.circleFour}`} />
 
         <div className={styles.content}>
-          <h1 className={styles.title}>
-            Bem-Vindo! O que {'\n'} gostaria de consultar hoje?
-          </h1>
+          <div className={styles.titleContainer}>
+            <h1 className={styles.title}>
+              Bem-Vindo! {'\n'}  O que gostaria de consultar hoje?
+            </h1>
+          </div>
 
-          <div className={styles.buttonGrid}>
-            <Link to="/pedidos">
-              <MenuButton iconSource={pedidosIcon} title="Pedidos" />
+          <div className={styles.buttonContainer}>
+            <Link to="/pedidos" className={styles.button}>
+              <img src={pedidosIcon} alt="" className={styles.buttonIconImage} />
+              <span className={styles.buttonText}>Pedidos</span>
             </Link>
-
-            <Link to="/estoque-uniformes">
-              <MenuButton iconSource={uniformesIcon} title="Estoque Uniformes" />
+            <Link to="/estoque-uniformes" className={styles.button}>
+              <img src={uniformesIcon} alt="" className={styles.buttonIconImage} />
+              <span className={styles.buttonText}>Estoque Uniformes</span>
             </Link>
-
-            <Link to="/estoque-armarios">
-              <MenuButton iconSource={armariosIcon} title="Estoque Armários" />
+            <Link to="/estoque-armarios" className={styles.button}>
+              <img src={armariosIcon} alt="" className={styles.buttonIconImage} />
+              <span className={styles.buttonText}>Estoque Armários</span>
             </Link>
-
-            <Link to="/relatorio-vendas">
-              <MenuButton iconSource={relatorioIcon} title="Relatório de Vendas" />
+            <Link to="/relatorio-vendas" className={styles.button}>
+              <img src={relatorioIcon} alt="" className={styles.buttonIconImage} />
+              <span className={styles.buttonText}>Relatório de Vendas</span>
             </Link>
-
-            <Link to="/controle-contrato">
-              <MenuButton iconSource={contratoIcon} title="Controle Contrato" />
+            <Link to="/controle-contrato" className={styles.button}>
+              <img src={contratoIcon} alt="" className={styles.buttonIconImage} />
+              <span className={styles.buttonText}>Controle Contrato</span>
             </Link>
           </div>
         </div>
