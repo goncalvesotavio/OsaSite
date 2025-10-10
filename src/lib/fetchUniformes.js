@@ -80,3 +80,28 @@ export async function atualizarEstoque(id_estoque, novaQtd) {
     console.error('Erro ao atualizar estoque: ', error)
   }
 }
+
+export async function adicionarTamanho(id_uniforme, tamanho, qtd) {
+  const { data, error } = await supabase
+    .from('Estoque_uniforme')
+    .insert({ 
+      id_uniforme: id_uniforme,
+      Tamanho: tamanho,
+      Qtd_estoque: qtd
+    })
+
+    if (error) {
+      console.error('Erro ao adicionar tamanho: ', error)
+    }
+}
+
+export async function deletarTamanho(id_estoque) {
+  const { data, error } = await supabase
+    .from('Estoque_uniforme')
+    .delete()
+    .eq('id_estoque', id_estoque)
+
+    if (error) {
+      console.error('Erro ao deletar tamanho: ', error)
+    }
+}

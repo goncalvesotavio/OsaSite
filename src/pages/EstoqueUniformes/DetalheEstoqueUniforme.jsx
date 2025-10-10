@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState, useCallback } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { FaArrowLeft, FaDotCircle, FaRegCircle, FaMinus, FaPlus, FaSave } from 'react-icons/fa';
-import { atualizarEstoque, buscarUniforme, detalhesEstoque } from '../../lib/fetchUniformes';
+import { atualizarEstoque, buscarUniforme, detalhesEstoque, adicionarTamanho, deletarTamanho } from '../../lib/fetchUniformes';
 import styles from './DetalheEstoqueUniforme.module.css';
 
 import UniformeIcon from '../../assets/uniformes gestao.png';
@@ -14,7 +14,9 @@ export default function DetalheEstoqueUniforme() {
     const [estoques, setEstoques] = useState([]);
     const [loading, setLoading] = useState(true);
     const [tamanhoSelecionado, setTamanhoSelecionado] = useState(null);
-    const [valorMudanca, setValorMudanca] = useState('');
+    const [valorMudanca, setValorMudanca] = useState('')
+    const [selecionadoNovoTamanho, setSelecionadoNovoTamanho] = useState(false)
+    const [novoTamanho, setNovoTamanho] = useState('')
 
     const carregarDetalhes = useCallback(async () => {
         if (!uniformeId) return;
@@ -41,30 +43,43 @@ export default function DetalheEstoqueUniforme() {
     }, [estoques]);
 
     const handleSalvarEstoque = async () => {
-        if (!tamanhoSelecionado) {
-            alert("Atenção: Por favor, selecione um tamanho antes de salvar.");
-            return;
+        if (selecionadoNovoTamanho && novoTamanho.trim() !== '') {
+            await adicionarTamanho(uniformeId, novoTamanho.trim(), parseInt(valorMudanca))
+        } else {
+            if (!tamanhoSelecionado) {
+                alert("Atenção: Por favor, selecione um tamanho antes de salvar.");
+                return;
+            }
+            const mudancaNumerica = parseInt(valorMudanca, 10);
+            if (isNaN(mudancaNumerica) || mudancaNumerica === 0) {
+                alert("Atenção: Por favor, insira um valor válido (diferente de zero) para adicionar ou remover.");
+                return;
+            }
+            const novaQuantidade = tamanhoSelecionado.Qtd_estoque + mudancaNumerica;
+            if (novaQuantidade < 0) {
+                alert("Erro: A quantidade em estoque não pode ser negativa.");
+                return;
+            }
+            await atualizarEstoque(tamanhoSelecionado.id_estoque, novaQuantidade);
+            alert(`Sucesso: Estoque do tamanho ${tamanhoSelecionado.Tamanho} atualizado!`);
+            await carregarDetalhes();
         }
-        const mudancaNumerica = parseInt(valorMudanca, 10);
-        if (isNaN(mudancaNumerica) || mudancaNumerica === 0) {
-            alert("Atenção: Por favor, insira um valor válido (diferente de zero) para adicionar ou remover.");
-            return;
-        }
-        const novaQuantidade = tamanhoSelecionado.Qtd_estoque + mudancaNumerica;
-        if (novaQuantidade < 0) {
-            alert("Erro: A quantidade em estoque não pode ser negativa.");
-            return;
-        }
-        await atualizarEstoque(tamanhoSelecionado.id_estoque, novaQuantidade);
-        alert(`Sucesso: Estoque do tamanho ${tamanhoSelecionado.Tamanho} atualizado!`);
-        await carregarDetalhes();
-    };
+    }
 
     const alterarValor = (quantidade) => {
         const valorAtual = parseInt(valorMudanca, 10) || 0;
         const novoValor = valorAtual + quantidade;
         setValorMudanca(novoValor.toString());
     };
+    
+    const apagarTamanho = async () => {
+        if (!tamanhoSelecionado) {
+            alert("Atenção: Por favor, selecione um tamanho antes de salvar.");
+            return;
+        }
+
+        await deletarTamanho(tamanhoSelecionado.id)
+    }
 
     if (loading) {
         return <main className={styles.loadingContainer}><div className={styles.spinner}></div></main>;
@@ -115,6 +130,17 @@ export default function DetalheEstoqueUniforme() {
                                 </button>
                             ))}
                         </div>
+                        <button onClick={() => setSelecionadoNovoTamanho(true)}>Novo Tamanho</button>
+
+                        {selecionadoNovoTamanho && (
+                            <>
+                                <label>Tamanho: </label>
+                                <input 
+                                  type='text' 
+                                  onChange={(e) => setNovoTamanho(e.target.value)}/>
+                            </>
+                        )}
+
                         <div className={styles.controlsContainer}>
                             <button className={styles.controlButton} onClick={() => alterarValor(-1)}>
                                 <FaMinus size={20} color="#FFF" />
@@ -132,6 +158,7 @@ export default function DetalheEstoqueUniforme() {
                             <button className={styles.saveButton} onClick={handleSalvarEstoque}>
                                 <FaSave size={24} color="#FFF" />
                             </button>
+                            <button onClick={() => apagarTamanho()}>Apagar</button>
                         </div>
                     </div>
                 </div>
