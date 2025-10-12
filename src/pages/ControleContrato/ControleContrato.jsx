@@ -8,7 +8,9 @@ import "react-datepicker/dist/react-datepicker.css";
 import { fetchPrecoPadraoArmario } from '@/lib/fetchArmarios.js';
 import { buscarDatas, novasDatas, novoPreco } from '@/lib/fetchContratos.js';
 import styles from './ControleContrato.module.css';
-import ContratoIcon from '@/assets/controle-contrato.png';
+import ContratoIcon from '@/assets/controle-contrato.png'
+import { salvarContrato } from '@/lib/fetchContratos.js';
+
 
 registerLocale('pt-BR', ptBR);
 
@@ -46,7 +48,7 @@ export default function ControleContrato() {
         await novasDatas(new Date().getFullYear(), dataAnual, dataSemestral);
         await novoPreco(parseFloat(preco));
         alert("Dados salvos com sucesso!");
-    };
+    }
 
     if (loading) {
         return (
@@ -106,10 +108,31 @@ export default function ControleContrato() {
 
                     <div className={styles.inputGroup}>
                         <label className={styles.label}>Contrato:</label>
-                        <button className={styles.uploadButton} onClick={() => alert("Funcionalidade de upload a ser implementada.")}>
+                        <label className={styles.uploadButton}>
                             <FaFileUpload size={18} />
                             <span className={styles.uploadButtonText}>Fazer Upload de Arquivo</span>
-                        </button>
+                            <input
+                                type="file"
+                                accept=".docx"
+                                style={{ display: 'none' }}
+                                onChange={async (e) => {
+                                    const file = e.target.files[0];
+                                    if (file) {
+                                        const reader = new FileReader();
+                                        reader.onload = async () => {
+                                            const base64 = reader.result.split(',')[1];
+                                            await salvarContrato({
+                                                name: file.name,
+                                                mimeType: file.type,
+                                                base64,
+                                            });
+                                            alert('Contrato atualizado com sucesso!');
+                                        };
+                                        reader.readAsDataURL(file);
+                                    }
+                                }}
+                            />
+                        </label>
                     </div>
 
                     <button className={styles.saveButton} onClick={salvar}>
