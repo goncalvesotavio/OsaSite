@@ -4,14 +4,16 @@
     display: flex;
     flex-direction: column;
     position: relative;
-    overflow: hidden;
+    overflow-x: hidden;
+    width: 100%;
 }
 
 .circle {
     position: absolute;
-    opacity: 0.7;
+    opacity: 0.6;
     z-index: 0;
     border-radius: 50%;
+    filter: blur(20px);
 }
 
 .circleOne {
@@ -49,24 +51,30 @@
 .header {
     display: flex;
     align-items: center;
-    padding: 20px 20px 10px;
+    padding: 1.5rem 2rem;
     z-index: 1;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 .backButton {
-    margin-right: 15px;
-    padding: 5px;
     color: #333;
+    transition: transform 0.2s ease;
+}
+
+.backButton:hover {
+    transform: scale(1.1);
 }
 
 .headerIcon {
     width: 35px;
     height: 35px;
-    margin-right: 10px;
+    margin: 0 0.75rem;
 }
 
 .headerTitle {
-    font-size: 24px;
+    font-size: clamp(1.5rem, 4vw, 2rem);
     font-weight: bold;
     color: #333;
     margin: 0;
@@ -77,36 +85,65 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 30px;
+    padding: 15rem 2rem 2rem;
     z-index: 1;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 .subtitle {
-    font-size: 26px;
+    font-size: clamp(1.5rem, 5vw, 2.25rem);
     color: #444;
     font-weight: 500;
-    margin-bottom: 30px;
+    text-align: center;
+    margin-bottom: 3rem;
 }
 
-.corredorButton {
-    background-color: #FFFFFF;
-    width: 80%;
+.corredorGrid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    width: 100%;
     max-width: 500px;
-    padding: 24px;
+}
+
+.corredorCard {
+    background-color: #FFFFFF;
+    padding: 2rem;
     border-radius: 15px;
     text-align: center;
-    margin-bottom: 20px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border: 1px solid #EAEAEA;
     text-decoration: none;
-    transition: transform 0.2s ease-in-out;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
 
-.corredorButton:hover {
-    transform: translateY(-3px);
+.corredorCard:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
 }
 
-.corredorButtonText {
-    font-size: 20px;
+.corredorCardText {
+    font-size: 1.5rem;
     font-weight: 600;
     color: #333;
+}
+
+@media (min-width: 640px) {
+    .corredorGrid {
+        grid-template-columns: repeat(2, 1fr);
+        max-width: 800px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .corredorGrid {
+        grid-template-columns: repeat(4, 1fr);
+        max-width: 1200px;
+    }
+
+    .circleFour {
+        bottom: 0;
+    }
 }

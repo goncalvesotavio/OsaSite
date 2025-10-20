@@ -25,14 +25,21 @@ const RelatorioCard = ({ item, dataInicio, dataFim }) => {
 
     return (
         <div className={styles.card}>
-            <img src={item.Img} alt={item.Nome} className={styles.cardImage} />
             <Link to={`/relatorio-vendas/uniformes-detalhe?${params.toString()}`} className={styles.infoButton}>
                 <FaInfoCircle size={20} color="#FFF" />
             </Link>
-            <p className={styles.cardTitle}>{item.Nome}</p>
-            <p className={styles.cardValue}>
-                Valor total de vendas: {item.totalVendas.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
-            </p>
+            <div className={styles.cardImageContainer}>
+                <img src={item.Img} alt={item.Nome} className={styles.cardImage} />
+            </div>
+            <div className={styles.cardContent}>
+                <p className={styles.cardTitle}>{item.Nome}</p>
+                <p className={styles.cardInfo}>
+                    {item.totalPecas} {item.totalPecas > 1 ? 'peças vendidas' : 'peça vendida'}
+                </p>
+                <p className={styles.cardValue}>
+                    {item.totalVendas.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+                </p>
+            </div>
         </div>
     );
 };
@@ -67,9 +74,11 @@ export default function UniformesResultado() {
                         Categoria: venda.Uniformes.Categoria,
                         precoBase: venda.Uniformes.Preço,
                         totalVendas: 0,
+                        totalPecas: 0,
                     };
                 }
                 acc[id].totalVendas += venda.Preco_total;
+                acc[id].totalPecas += venda.Qtd;
                 return acc;
             }, {});
 
@@ -79,8 +88,12 @@ export default function UniformesResultado() {
         carregarRelatorio();
     }, [dataInicio, dataFim]);
 
-    const valorTotalArrecadado = useMemo(() => {
-        return relatorio.reduce((soma, item) => soma + item.totalVendas, 0);
+    const { valorTotalArrecadado, totalPecasVendidas } = useMemo(() => {
+        return relatorio.reduce((acc, item) => {
+            acc.valorTotalArrecadado += item.totalVendas;
+            acc.totalPecasVendidas += item.totalPecas;
+            return acc;
+        }, { valorTotalArrecadado: 0, totalPecasVendidas: 0 });
     }, [relatorio]);
     
     const relatorioFiltrado = useMemo(() => {
@@ -116,30 +129,39 @@ export default function UniformesResultado() {
                 <h1 className={styles.headerTitle}>Relatório de Uniformes</h1>
             </header>
             
-            <div className={styles.searchContainer}>
-                <input type="text" className={styles.searchInput} placeholder="Pesquise aqui..." value={textoPesquisa} onChange={(e) => setTextoPesquisa(e.target.value)}/>
-                <FaSearch size={20} className={styles.searchIcon} />
-            </div>
-            
-            <div className={styles.categoryContainerWrapper}>
-                <div className={styles.categoryContainer}>
-                    {categorias.map(c => (
-                        <button key={c.label} className={`${styles.categoryButton} ${JSON.stringify(filtroCategoria) === JSON.stringify(c.value) ? styles.categoryButtonActive : ''}`} onClick={() => setFiltroCategoria(c.value)}>
-                            <span className={`${styles.categoryButtonText} ${JSON.stringify(filtroCategoria) === JSON.stringify(c.value) ? styles.categoryButtonTextActive : ''}`}>{c.label}</span>
-                        </button>
-                    ))}
+            <div className={styles.controlsContainer}>
+                <div className={styles.searchContainer}>
+                    <FaSearch size={18} className={styles.searchIcon} />
+                    <input type="text" className={styles.searchInput} placeholder="Pesquisar por nome..." value={textoPesquisa} onChange={(e) => setTextoPesquisa(e.target.value)}/>
+                </div>
+                
+                <div className={styles.summaryContainer}>
+                    <p className={styles.summaryText}>Período: <strong>{formatarData(dataInicio)}</strong> a <strong>{formatarData(dataFim)}</strong></p>
+                    <p className={styles.summaryText}>Peças vendidas: <strong>{totalPecasVendidas}</strong></p>
+                    <p className={styles.summaryText}>Total: <strong>{valorTotalArrecadado.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</strong></p>
                 </div>
             </div>
-            
-            <div className={styles.summaryContainer}>
-                <p className={styles.summaryText}>De: <strong>{formatarData(dataInicio)}</strong> até <strong>{formatarData(dataFim)}</strong></p>
-                <p className={styles.summaryText}>Total arrecadado: <strong>{valorTotalArrecadado.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</strong></p>
-            </div>
 
-            <div className={styles.listContainer}>
-                {relatorioFiltrado.map(item => (
-                    <RelatorioCard key={item.id} item={item} dataInicio={dataInicio} dataFim={dataFim} />
+            <div className={styles.categoryContainer}>
+                {categorias.map(c => (
+                    <button key={c.label} className={`${styles.categoryButton} ${JSON.stringify(filtroCategoria) === JSON.stringify(c.value) ? styles.categoryButtonActive : ''}`} onClick={() => setFiltroCategoria(c.value)}>
+                        <span>{c.label}</span>
+                    </button>
                 ))}
+            </div>
+            
+            <div className={styles.listContainer}>
+                {relatorioFiltrado.length > 0 ? (
+                    <div className={styles.cardGrid}>
+                        {relatorioFiltrado.map(item => (
+                            <RelatorioCard key={item.id} item={item} dataInicio={dataInicio} dataFim={dataFim} />
+                        ))}
+                    </div>
+                ) : (
+                    <div className={styles.emptyState}>
+                        <p>Nenhum resultado encontrado para os filtros aplicados.</p>
+                    </div>
+                )}
             </div>
         </main>
     )

@@ -1,46 +1,98 @@
-.safeArea, .loadingContainer {
+.safeArea {
     background-color: #F4F1E9;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    position: relative;
+    overflow: hidden;
+    width: 100%;
 }
 
 .loadingContainer {
+    flex: 1;
+    display: flex;
     justify-content: center;
     align-items: center;
 }
 
 .spinner {
-    width: 48px;
-    height: 48px;
-    border: 5px solid #FFF;
-    border-bottom-color: #5C8E8B;
+    width: 50px;
+    height: 50px;
+    border: 6px solid rgba(0, 0, 0, 0.1);
+    border-left-color: #5C8E8B;
     border-radius: 50%;
     animation: rotation 1s linear infinite;
 }
 
 @keyframes rotation {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
 }
 
-.circle { position: absolute; opacity: 0.7; z-index: 0; border-radius: 50%; }
-.circleOne { width: 200px; height: 200px; background-color: #D9A583; top: -50px; left: -80px; }
-.circleTwo { width: 300px; height: 300px; background-color: #9FB5A8; top: 100px; right: -120px; }
-.circleThree { width: 250px; height: 250px; background-color: #8C5F54; bottom: 130px; left: -100px; }
-.circleFour { width: 350px; height: 350px; background-color: #D9C47E; bottom: -130px; right: -100px; }
+.circle {
+    position: absolute;
+    opacity: 0.6;
+    z-index: 0;
+    border-radius: 50%;
+    filter: blur(20px);
+}
+
+.circleOne {
+    width: 200px;
+    height: 200px;
+    background-color: #D9A583;
+    top: -50px;
+    left: -80px;
+}
+
+.circleTwo {
+    width: 300px;
+    height: 300px;
+    background-color: #9FB5A8;
+    top: 100px;
+    right: -120px;
+}
+
+.circleThree {
+    width: 250px;
+    height: 250px;
+    background-color: #8C5F54;
+    bottom: 130px;
+    left: -100px;
+}
+
+.circleFour {
+    width: 350px;
+    height: 350px;
+    background-color: #D9C47E;
+    bottom: -130px;
+    right: -100px;
+}
 
 .header {
     display: flex;
     align-items: center;
-    padding: 20px 20px 10px;
+    padding: 1.5rem 2rem;
     z-index: 1;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 .backButton {
-    margin-right: 15px;
-    padding: 5px;
     color: #333;
+    transition: transform 0.2s ease;
+    padding: 0.5rem;
+    margin-right: 0.75rem;
+}
+
+.backButton:hover {
+    transform: scale(1.1);
 }
 
 .headerIcon {
@@ -51,7 +103,7 @@
 }
 
 .headerTitle {
-    font-size: 24px;
+    font-size: clamp(1.5rem, 4vw, 2rem);
     font-weight: bold;
     color: #333;
     margin: 0;
@@ -62,72 +114,165 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 20px;
+    padding: 2rem;
     z-index: 1;
 }
 
 .card {
     background-color: #FFFFFF;
     width: 100%;
-    max-width: 500px;
+    max-width: 600px;
     border-radius: 20px;
-    padding: 25px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border: 1px solid #EAEAEA;
 }
 
 .inputGroup {
-    margin-bottom: 25px;
+    margin-bottom: 1.5rem;
 }
 
 .label {
     display: block;
-    font-size: 16px;
+    font-size: 0.9rem;
     color: #555;
-    margin-bottom: 8px;
+    margin-bottom: 0.5rem;
     font-weight: 500;
 }
 
 .input {
-    background-color: #F5F5F5;
-    border: 1px solid #E0E0E0;
+    background-color: #FFFFFF;
+    border: 1px solid #ddd;
     border-radius: 10px;
-    padding: 12px 15px;
-    font-size: 16px;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
     width: 100%;
     box-sizing: border-box;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.input:focus {
+    outline: none;
+    border-color: #5C8E8B;
+    box-shadow: 0 0 0 3px rgba(92, 142, 139, 0.2);
+}
+
+.dateContainer {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+}
+
+.dateInputButton {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background-color: #FFFFFF;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    cursor: pointer;
+    font-family: inherit;
+    text-align: left;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.dateInputButton:hover {
+    border-color: #999;
+}
+
+.dateTextContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+.dateLabel {
+    display: none;
+}
+
+.dateValue {
+    font-size: 1rem;
+    color: #333;
+}
+
+.calendarIcon {
+    color: #5C8E8B;
+    font-size: 1.1rem;
+}
+
+:global(.react-datepicker-wrapper) {
+    width: 100%;
 }
 
 .uploadButton {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #E0E0E0;
+    gap: 0.75rem;
+    background-color: #f0f0f0;
+    border: 1px solid #ddd;
     border-radius: 10px;
-    padding: 15px;
+    padding: 0.75rem;
     width: 100%;
-    border: none;
     cursor: pointer;
+    transition: background-color 0.2s, border-color 0.2s;
+}
+
+.uploadButton:hover {
+    background-color: #e0e0e0;
+    border-color: #ccc;
 }
 
 .uploadButtonText {
-    margin-left: 10px;
-    font-size: 16px;
+    font-size: 1rem;
     color: #333;
     font-weight: 500;
 }
 
 .saveButton {
     background-color: #5C8E8B;
-    border-radius: 15px;
-    padding: 18px;
+    border-radius: 10px;
+    padding: 1rem;
     width: 100%;
     border: none;
     cursor: pointer;
-    margin-top: 10px;
+    margin-top: 1.5rem;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.saveButton:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    background-color: #4a716f;
 }
 
 .saveButtonText {
     color: #FFFFFF;
-    font-size: 18px;
+    font-size: 1.1rem;
     font-weight: bold;
+}
+
+@media (min-width: 768px) {
+    .card {
+        padding: 2.5rem;
+    }
+
+    .dateContainer {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .dateInputButton {
+        padding: 0.5rem 1rem;
+    }
+
+    .dateLabel {
+        display: block;
+        font-size: 0.8rem;
+    }
+
+    .dateValue {
+        font-size: 1rem;
+    }
 }

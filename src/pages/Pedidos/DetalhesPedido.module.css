@@ -1,40 +1,46 @@
-.safeArea,
-.loadingContainer {
+.safeArea {
     background-color: #F4F1E9;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    width: 100%;
+    overflow-x: hidden;
+    position: relative;
 }
 
 .loadingContainer {
+    background-color: #F4F1E9;
+    min-height: 100vh;
+    display: flex;
     justify-content: center;
     align-items: center;
 }
 
 .spinner {
-    width: 48px;
-    height: 48px;
-    border: 5px solid #FFF;
-    border-bottom-color: #5C8E8B;
+    width: 50px;
+    height: 50px;
+    border: 6px solid rgba(0, 0, 0, 0.1);
+    border-left-color: #5C8E8B;
     border-radius: 50%;
     animation: rotation 1s linear infinite;
 }
 
 @keyframes rotation {
-    0% {
+    from {
         transform: rotate(0deg);
     }
 
-    100% {
+    to {
         transform: rotate(360deg);
     }
 }
 
 .circle {
     position: absolute;
-    opacity: 0.7;
+    opacity: 0.6;
     z-index: 0;
     border-radius: 50%;
+    filter: blur(20px);
 }
 
 .circleOne {
@@ -69,156 +75,201 @@
     right: -100px;
 }
 
-.scrollContainer {
-    flex: 1;
-    overflow-y: auto;
-    padding: 20px;
-    z-index: 1;
-}
-
-.card {
-    background-color: #FFFFFF;
-    border-radius: 20px;
-    padding: 20px;
-    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
-}
-
 .header {
     display: flex;
     align-items: center;
-    margin-bottom: 20px;
+    padding: 1.5rem 2rem;
+    z-index: 1;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
 }
 
-.backButton,
-.deleteButton {
-    padding: 5px;
+.backButton {
     color: #333;
-    background: none;
-    border: none;
-    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.backButton:hover {
+    transform: scale(1.1);
 }
 
 .headerIcon {
-    margin: 0 10px;
+    margin: 0 0.75rem;
+    color: #333;
 }
 
 .headerTitle {
-    font-size: 28px;
+    font-size: clamp(1.5rem, 4vw, 2rem);
     font-weight: bold;
     color: #333;
     margin: 0;
 }
 
-.clientName {
-    font-size: 22px;
-    font-weight: 600;
-    text-align: center;
-    color: #333;
-    padding: 15px 0;
-    border-top: 1px solid #EEE;
+.contentContainer {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0 2rem 2.5rem;
+    z-index: 1;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.card {
+    background-color: transparent;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+}
+
+.infoColumn {
+    background-color: #FFFFFF;
+    border-radius: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border: 1px solid #EAEAEA;
+    padding: 1.5rem;
+}
+
+.actionsColumn {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.clientHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     border-bottom: 1px solid #EEE;
-    margin-bottom: 15px;
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+}
+
+.clientName {
+    font-size: clamp(1.25rem, 4vw, 1.75rem);
+    font-weight: 600;
+    color: #333;
+    margin: 0;
+}
+
+.tableWrapper {
+    width: 100%;
+    overflow-x: auto;
 }
 
 .table {
     width: 100%;
-    margin-bottom: 20px;
     border-collapse: collapse;
+}
+
+.tableHeader {
+    font-size: 0.9rem;
+    color: #666;
+    text-align: left;
+    padding: 0.75rem;
+    border-bottom: 2px solid #5C8E8B;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .tableRow {
     border-bottom: 1px solid #F0F0F0;
 }
 
-.tableCellIndex {
-    width: 10%;
-    text-align: center;
+.tableRow:last-child {
+    border-bottom: none;
 }
 
-.tableCellDesc {
-    width: 50%;
+.tableCell {
+    font-size: 1rem;
+    color: #444;
+    padding: 1rem 0.75rem;
+    white-space: nowrap;
 }
 
-.tableCellSize {
-    width: 20%;
-    text-align: center;
-}
-
-.tableCellPrice {
-    width: 25%;
+.priceCell {
     text-align: right;
     font-weight: 500;
 }
 
-.tableRow td {
-    font-size: 16px;
-    color: #444;
-    padding: 12px 2px;
+.actionCard {
+    background-color: #FFFFFF;
+    border-radius: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border: 1px solid #EAEAEA;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
 }
 
 .section {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 0;
-    border-top: 1px solid #EEE;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #EEE;
+}
+
+.section:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
 }
 
 .sectionTitle {
-    font-size: 18px;
+    font-size: 1.25rem;
     font-weight: 600;
     color: #333;
-    margin: 0 0 10px 0;
+    margin: 0 0 1rem 0;
+}
+
+.radioGroup {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
 }
 
 .radioOption {
     display: flex;
     align-items: center;
-    margin-bottom: 5px;
     background: none;
     border: none;
     cursor: pointer;
-    padding: 2px 0;
+    padding: 0;
 }
 
 .radioText {
-    font-size: 16px;
-    margin-left: 10px;
+    font-size: 1rem;
+    margin-left: 0.75rem;
     color: #555;
-}
-
-.saveButton {
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: #5C8E8B;
+    font-weight: 500;
 }
 
 .footer {
+    background-color: #FFFFFF;
+    border-radius: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border: 1px solid #EAEAEA;
+    padding: 1.5rem;
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    border-top: 1px solid #EEE;
-    padding-top: 15px;
-    margin-top: 10px;
 }
 
 .footerLabel {
-    font-size: 14px;
+    font-size: 0.9rem;
     color: #666;
-    margin: 0;
+    margin: 0 0 0.25rem 0;
 }
 
 .footerValue {
-    font-size: 18px;
+    font-size: 1.1rem;
     font-weight: 500;
     color: #333;
     margin: 0;
 }
 
 .reciboIcon {
-    width: 40px;
-    height: 40px;
-    margin: 0 20px 0 auto;
+    width: 45px;
+    height: 45px;
     object-fit: contain;
 }
 
@@ -227,7 +278,105 @@
 }
 
 .totalValue {
-    font-size: 22px;
+    font-size: 1.75rem;
     font-weight: bold;
     color: #5C8E8B;
+}
+
+.button {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 100%;
+}
+
+.button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.saveButton {
+    background-color: #5C8E8B;
+    color: #FFF;
+}
+
+.saveButton:hover {
+    background-color: #4a716f;
+}
+
+.deleteButtonMobile {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #c94c4c;
+    padding: 0.5rem;
+}
+
+.deleteButtonDesktop {
+    display: none;
+    background-color: #c94c4c;
+    color: #FFF;
+}
+
+.deleteButtonDesktop:hover {
+    background-color: #a13c3c;
+}
+
+@media (max-width: 767px) {
+    .tableHeader {
+        display: none;
+    }
+
+    .tableRow {
+        display: block;
+        border-bottom: 2px solid #5C8E8B;
+        margin-bottom: 1rem;
+        padding-bottom: 1rem;
+    }
+
+    .tableCell {
+        display: block;
+        text-align: right;
+        padding: 0.5rem 0;
+        border-bottom: 1px solid #f0f0f0;
+        white-space: normal;
+    }
+
+    .tableCell::before {
+        content: attr(data-label);
+        float: left;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .priceCell {
+        text-align: right;
+    }
+}
+
+@media (min-width: 1024px) {
+    .card {
+        grid-template-columns: 1fr 420px;
+    }
+
+    .deleteButtonMobile {
+        display: none;
+    }
+
+    .deleteButtonDesktop {
+        display: inline-flex;
+    }
+
+    .circleFour, .circleThree {
+        bottom: 0;
+    }
 }

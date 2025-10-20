@@ -86,12 +86,14 @@ export default function DetalheArmario() {
         "Armário consertado e disponível.", "Não foi possível consertar o armário."
     );
 
-    const getStatusStyle = () => {
-        if (armario?.Funcional === false) return styles.statusDotRed;
-        if (armario?.Disponivel) return styles.statusDotGreen;
-        return styles.statusDotGray;
+    const getStatusInfo = () => {
+        if (armario?.Funcional === false) return { style: styles.statusRed, text: 'Quebrado' };
+        if (armario?.Disponivel) return { style: styles.statusGreen, text: 'Disponível' };
+        return { style: styles.statusGray, text: 'Alugado' };
     };
+
     const formatarData = (dataString) => dataString ? new Date(dataString).toLocaleDateString('pt-BR', { timeZone: 'UTC' }) : "N/A";
+
     const calcularVencimento = (dataString) => {
         if (!dataString) return "N/A";
         const data = new Date(dataString);
@@ -103,44 +105,56 @@ export default function DetalheArmario() {
         if (armario?.Funcional === false) {
             return (
                 <div className={styles.statusInfoContainer}>
-                    <p className={styles.infoText}>Este armário está quebrado.</p>
+                    <p className={styles.infoText}>Este armário está quebrado e aguardando manutenção.</p>
                     <button className={`${styles.actionButton} ${styles.repairButton}`} onClick={handleMarcarConsertado}>
-                        <FaCheckCircle size={16} color="#FFF" />
-                        <span className={styles.actionButtonText}>Marcar como Consertado</span>
+                        <FaCheckCircle />
+                        <span>Marcar como Consertado</span>
                     </button>
                 </div>
             );
         }
         if (armario?.Disponivel) {
-            return <p className={styles.infoText}>Este armário não está alugado.</p>;
+            return (
+                <div className={styles.statusInfoContainer}>
+                    <p className={styles.infoText}>Este armário está disponível para aluguel.</p>
+                    <button className={`${styles.actionButton} ${styles.breakButton}`} onClick={handleMarcarQuebrado}>
+                        <FaTools />
+                        <span>Marcar como Quebrado</span>
+                    </button>
+                </div>
+            );
         }
         if (cliente) {
             const contratoUrl = armario?.Vendas_armários?.[0]?.Contrato;
             return (
-                <div>
-                    <DetalheItem label="Ocupado por:" value={cliente.Nome} />
-                    <DetalheItem label="RM:" value={cliente.RM} />
-                    <DetalheItem label="Curso:" value={cliente.Curso} />
-                    <DetalheItem label="Série:" value={cliente.Serie} />
-                    <DetalheItem label="Data de compra:" value={formatarData(venda?.Data)} />
-                    <DetalheItem label="Vencimento:" value={calcularVencimento(venda?.Data)} />
+                <div className={styles.clientDetails}>
+                    <DetalheItem label="Ocupado por" value={cliente.Nome} />
+                    <DetalheItem label="RM" value={cliente.RM} />
+                    <DetalheItem label="Curso" value={cliente.Curso} />
+                    <DetalheItem label="Série" value={cliente.Serie} />
+                    <DetalheItem label="Data de compra" value={formatarData(venda?.Data)} />
+                    <DetalheItem label="Vencimento" value={calcularVencimento(venda?.Data)} />
                     {contratoUrl && (
                         <div className={styles.contratoContainer}>
-                            <span className={styles.detalheLabel}>Visualize o contrato:</span>
+                            <span className={styles.detalheLabel}>Contrato</span>
                             <Link to={`/estoque-armarios/contrato?url=${encodeURIComponent(contratoUrl)}`} className={styles.contratoButton}>
                                 <img src={NovoContratoIcon} alt="Ícone de Contrato" className={styles.contratoButtonIcon} />
+                                <span>Visualizar</span>
                             </Link>
                         </div>
                     )}
                     <div className={styles.actionsContainer}>
-                        <button className={`${styles.actionButton} ${styles.breakButton}`} onClick={handleMarcarQuebrado}>
-                            <FaTools size={16} color="#FFF" />
-                            <span className={styles.actionButtonText}>Marcar como Quebrado</span>
-                        </button>
-                        <button className={`${styles.actionButton} ${styles.cancelButton}`} onClick={handleCancelarAluguel}>
-                            <FaTimesCircle size={16} color="#FFF" />
-                            <span className={styles.actionButtonText}>Cancelar Aluguel</span>
-                        </button>
+                        <h3 className={styles.actionsTitle}>Ações</h3>
+                        <div className={styles.buttonGroup}>
+                            <button className={`${styles.actionButton} ${styles.breakButton}`} onClick={handleMarcarQuebrado}>
+                                <FaTools />
+                                <span>Quebrado</span>
+                            </button>
+                            <button className={`${styles.actionButton} ${styles.cancelButton}`} onClick={handleCancelarAluguel}>
+                                <FaTimesCircle />
+                                <span>Cancelar Aluguel</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
             );
@@ -155,6 +169,8 @@ export default function DetalheArmario() {
         return <main className={styles.loadingContainer}><p>Armário não encontrado.</p></main>;
     }
 
+    const statusInfo = getStatusInfo();
+
     return (
         <main className={styles.safeArea}>
             <div className={`${styles.circle} ${styles.circleOne}`} />
@@ -168,21 +184,21 @@ export default function DetalheArmario() {
                 <h1 className={styles.headerTitle}>Detalhe do Armário</h1>
             </header>
 
-            <div className={styles.scrollContainer}>
+            <div className={styles.contentContainer}>
                 <div className={styles.card}>
-                    <div className={styles.cardHeader}>
-                        <div className={styles.numeroContainer}><span className={styles.numeroTexto}>{armario.N_armario}</span></div>
+                    <div className={styles.summaryColumn}>
+                        <div className={styles.numeroContainer}>
+                            <span className={styles.numeroTexto}>{armario.N_armario}</span>
+                        </div>
                         <div className={styles.headerInfo}>
                             <p className={styles.corredorTexto}>Corredor {armario.Corredor}</p>
-                            <div className={styles.statusContainer}>
-                                <span className={styles.statusTexto}>Status:</span>
-                                <div className={`${styles.statusDot} ${getStatusStyle()}`} />
+                            <div className={`${styles.statusBadge} ${statusInfo.style}`}>
+                                {statusInfo.text}
                             </div>
                         </div>
                     </div>
-                    <div className={styles.divider} />
-                    <div className={styles.detalhesContainer}>
-                        <h2 className={styles.detalhesTitle}>Detalhes</h2>
+
+                    <div className={styles.detailsColumn}>
                         <RenderDetalhes />
                     </div>
                 </div>

@@ -29,12 +29,14 @@ export default function EstoqueArmarios() {
             </header>
 
             <div className={styles.content}>
-                <h2 className={styles.subtitle}>Selecione um corredor</h2>
-                {corredores.map(corredor => (
-                    <Link key={corredor.nome} to={corredor.href} className={styles.corredorButton}>
-                        <span className={styles.corredorButtonText}>{corredor.nome}</span>
-                    </Link>
-                ))}
+                <h2 className={styles.subtitle}>Selecione um corredor para gerenciar</h2>
+                <div className={styles.corredorGrid}>
+                    {corredores.map(corredor => (
+                        <Link key={corredor.nome} to={corredor.href} className={styles.corredorCard}>
+                            <span className={styles.corredorCardText}>{corredor.nome}</span>
+                        </Link>
+                    ))}
+                </div>
             </div>
         </main>
     );

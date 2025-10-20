@@ -3,13 +3,17 @@
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    position: relative;
+    overflow: hidden;
+    width: 100%;
 }
 
 .circle {
     position: absolute;
-    opacity: 0.7;
+    opacity: 0.6;
     z-index: 0;
     border-radius: 50%;
+    filter: blur(20px);
 }
 
 .circleOne {
@@ -47,23 +51,31 @@
 .header {
     display: flex;
     align-items: center;
-    padding: 20px 20px 10px;
+    padding: 1.5rem 2rem;
     z-index: 1;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 .backButton {
-    margin-right: 15px;
-    padding: 5px;
     color: #333;
+    transition: transform 0.2s ease;
+    padding: 0.5rem;
+    margin-right: 0.75rem;
+}
+
+.backButton:hover {
+    transform: scale(1.1);
 }
 
 .headerIcon {
-    margin-right: 10px;
+    margin-right: 0.75rem;
     color: #333;
 }
 
 .headerTitle {
-    font-size: 24px;
+    font-size: clamp(1.5rem, 4vw, 2rem);
     font-weight: bold;
     color: #333;
     margin: 0;
@@ -74,68 +86,123 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 20px;
+    padding: 0rem 2rem 2rem;
     z-index: 1;
 }
 
 .card {
     background-color: #FFFFFF;
     width: 100%;
-    max-width: 450px;
+    max-width: 700px;
     border-radius: 20px;
-    padding: 30px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border: 1px solid #EAEAEA;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
 .cardTitle {
-    font-size: 20px;
+    font-size: clamp(1.1rem, 4vw, 1.25rem);
     font-weight: 500;
     color: #333;
     text-align: center;
-    margin-bottom: 30px;
+    margin: 0 0 2rem 0;
+}
+
+.datePickerContainer {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    width: 100%;
+    margin-bottom: 2rem;
+}
+
+.datePickerWrapper {
+    width: 100%;
+}
+
+.datePickerWrapper :global(.react-datepicker-wrapper) {
+    width: 100%;
 }
 
 .dateButton {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     width: 100%;
-    padding: 15px 0;
-    border-bottom: 1px solid #EEE;
-    margin-bottom: 20px;
-    background: none;
-    border-top: none;
-    border-left: none;
-    border-right: none;
+    padding: 0.75rem 1rem;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 10px;
     cursor: pointer;
     font-family: inherit;
+    text-align: left;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.dateButton:hover {
+    border-color: #5C8E8B;
+    box-shadow: 0 0 0 2px rgba(92, 142, 139, 0.2);
+}
+
+.dateTextContainer {
+    display: flex;
+    flex-direction: column;
 }
 
 .dateLabel {
-    font-size: 18px;
-    color: #555;
-    font-weight: 600;
+    font-size: 0.85rem;
+    color: #666;
+    font-weight: 500;
+    margin-bottom: 0.25rem;
 }
 
 .dateValue {
-    font-size: 18px;
+    font-size: 1.1rem;
     color: #333;
+    font-weight: 600;
+}
+
+.calendarIcon {
+    color: #5C8E8B;
+    font-size: 1.25rem;
 }
 
 .generateButton {
     background-color: #5C8E8B;
-    padding: 15px 40px;
-    border-radius: 30px;
-    margin-top: 20px;
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 0.875rem 2.5rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     border: none;
     cursor: pointer;
+    width: 100%;
+    transition: all 0.2s ease;
+}
+
+.generateButton:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    background-color: #4a716f;
 }
 
 .generateButtonText {
     color: #FFF;
-    font-size: 18px;
+    font-size: 1.1rem;
     font-weight: bold;
+}
+
+@media (min-width: 768px) {
+    .card {
+        padding: 2.5rem;
+    }
+
+    .datePickerContainer {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .generateButton {
+        width: auto;
+    }
 }

@@ -1,6 +1,6 @@
 import React, { useState, forwardRef } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
-import { FaArrowLeft, FaChartBar } from 'react-icons/fa';
+import { FaArrowLeft, FaChartBar, FaCalendarAlt } from 'react-icons/fa';
 import DatePicker, { registerLocale } from 'react-datepicker';
 import ptBR from 'date-fns/locale/pt-BR';
 import "react-datepicker/dist/react-datepicker.css";
@@ -10,8 +10,11 @@ registerLocale('pt-BR', ptBR);
 
 const DateInput = forwardRef(({ value, onClick, label }, ref) => (
     <button className={styles.dateButton} onClick={onClick} ref={ref}>
-        <span className={styles.dateLabel}>{label}: </span>
-        <span className={styles.dateValue}>{value}</span>
+        <div className={styles.dateTextContainer}>
+            <span className={styles.dateLabel}>{label}</span>
+            <span className={styles.dateValue}>{value}</span>
+        </div>
+        <FaCalendarAlt className={styles.calendarIcon} />
     </button>
 ));
 
@@ -63,30 +66,38 @@ export default function SelecionarDataRelatorio() {
 
             <div className={styles.content}>
                 <div className={styles.card}>
-                    <p className={styles.cardTitle}>Defina uma data de início e fim para gerar o relatório:</p>
+                    <p className={styles.cardTitle}>Selecione o período para gerar o relatório</p>
                     
-                    <DatePicker
-                        selected={dataInicio}
-                        onChange={(date) => setDataInicio(date)}
-                        selectsStart
-                        startDate={dataInicio}
-                        endDate={dataFim}
-                        dateFormat="dd/MM/yyyy"
-                        locale="pt-BR"
-                        customInput={<DateInput label="Início" />}
-                    />
-                    
-                    <DatePicker
-                        selected={dataFim}
-                        onChange={(date) => setDataFim(date)}
-                        selectsEnd
-                        startDate={dataInicio}
-                        endDate={dataFim}
-                        minDate={dataInicio}
-                        dateFormat="dd/MM/yyyy"
-                        locale="pt-BR"
-                        customInput={<DateInput label="Fim" />}
-                    />
+                    <div className={styles.datePickerContainer}>
+                        <div className={styles.datePickerWrapper}>
+                            <DatePicker
+                                selected={dataInicio}
+                                onChange={(date) => setDataInicio(date)}
+                                selectsStart
+                                startDate={dataInicio}
+                                endDate={dataFim}
+                                dateFormat="dd/MM/yyyy"
+                                locale="pt-BR"
+                                customInput={<DateInput label="Data de Início" />}
+                                popperClassName={styles.datePickerPopper}
+                            />
+                        </div>
+                        
+                        <div className={styles.datePickerWrapper}>
+                            <DatePicker
+                                selected={dataFim}
+                                onChange={(date) => setDataFim(date)}
+                                selectsEnd
+                                startDate={dataInicio}
+                                endDate={dataFim}
+                                minDate={dataInicio}
+                                dateFormat="dd/MM/yyyy"
+                                locale="pt-BR"
+                                customInput={<DateInput label="Data Final" />}
+                                popperClassName={styles.datePickerPopper}
+                            />
+                        </div>
+                    </div>
                     
                     <button className={styles.generateButton} onClick={gerarRelatorio}>
                         <span className={styles.generateButtonText}>Gerar Relatório</span>

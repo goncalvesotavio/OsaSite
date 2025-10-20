@@ -24,20 +24,22 @@ export default function RelatorioVendas() {
             </header>
 
             <div className={styles.content}>
-                <Link to="/relatorio-vendas/uniformes" className={styles.reportButton}>
-                    <img src={UniformeIcon} alt="Uniformes" className={styles.reportButtonImageIcon} />
-                    <span className={styles.reportButtonText}>Relatório de Uniformes</span>
-                </Link>
-                <Link to="/relatorio-vendas/armarios" className={styles.reportButton}>
-                    <img src={ArmarioIcon} alt="Armários" className={styles.reportButtonImageIcon} />
-                    <span className={styles.reportButtonText}>Relatório de Armários</span>
-                </Link>
-                <Link to="/relatorio-vendas/geral" className={styles.reportButton}>
-                    <div className={styles.reportButtonFontIcon}>
-                        <FiDollarSign size={40} />
-                    </div>
-                    <span className={styles.reportButtonText}>Relatório Geral</span>
-                </Link>
+                <div className={styles.cardGrid}>
+                    <Link to="/relatorio-vendas/uniformes" className={styles.reportCard}>
+                        <img src={UniformeIcon} alt="Uniformes" className={styles.cardIconImage} />
+                        <span className={styles.cardText}>Uniformes</span>
+                    </Link>
+                    <Link to="/relatorio-vendas/armarios" className={styles.reportCard}>
+                        <img src={ArmarioIcon} alt="Armários" className={styles.cardIconImage} />
+                        <span className={styles.cardText}>Armários</span>
+                    </Link>
+                    <Link to="/relatorio-vendas/geral" className={styles.reportCard}>
+                        <div className={styles.cardIconFont}>
+                            <FiDollarSign size={45} />
+                        </div>
+                        <span className={styles.cardText}>Geral</span>
+                    </Link>
+                </div>
             </div>
         </main>
     );

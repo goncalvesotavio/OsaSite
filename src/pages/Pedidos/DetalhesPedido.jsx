@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
-import { FaArrowLeft, FaClipboardList, FaTrashAlt, FaSave, FaCheckCircle, FaCircle } from 'react-icons/fa';
+import { FaArrowLeft, FaClipboardList, FaTrash, FaSave, FaCheckCircle, FaRegCircle } from 'react-icons/fa';
 import styles from './DetalhesPedido.module.css';
 import {
     checkIfVendaHasUniformes,
@@ -16,10 +16,10 @@ import ReciboIcon from '../../assets/recibo.png';
 
 const ItemRow = ({ item }) => (
     <tr className={styles.tableRow}>
-        <td className={styles.tableCellIndex}>{item.quantidade || ''}</td>
-        <td className={styles.tableCellDesc}>{item.nome}</td>
-        <td className={styles.tableCellSize}>{item.detalhe}</td>
-        <td className={styles.tableCellPrice}>
+        <td className={styles.tableCell} data-label="Qtd">{item.quantidade || '1'}</td>
+        <td className={styles.tableCell} data-label="Produto">{item.nome}</td>
+        <td className={styles.tableCell} data-label="Detalhe">{item.detalhe}</td>
+        <td className={`${styles.tableCell} ${styles.priceCell}`} data-label="Preço">
             {item.preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
         </td>
     </tr>
@@ -56,9 +56,9 @@ export default function DetalhesPedido() {
             }
             setHasUniformes(uniformesCheck);
 
-            const itensUniformes = (uniformesData || []).map(item => ({ 
-                id: `uniforme-${item.id}`, nome: item.Uniformes.Nome, detalhe: item.Estoque_uniforme?.Tamanho || '-', 
-                preco: item.Preco_total, quantidade: item.Qtd 
+            const itensUniformes = (uniformesData || []).map(item => ({
+                id: `uniforme-${item.id}`, nome: item.Uniformes.Nome, detalhe: item.Estoque_uniforme?.Tamanho || '-',
+                preco: item.Preco_total, quantidade: item.Qtd
             }));
             const itensArmarios = (armariosData || []).map(item => ({
                 id: `armario-${item.id}`, nome: 'Armário', detalhe: `Nº ${item.N_armario}`,
@@ -76,26 +76,22 @@ export default function DetalhesPedido() {
         carregarDetalhes();
     }, [carregarDetalhes]);
 
-    const handleSalvarPagamento = async () => {
+    const handleSalvarStatus = async (type) => {
         if (!pedido) return;
-        const { error } = await updateStatusPagamento(pedido.id_venda, statusPago);
-        if (error) {
-            alert("Erro", "Não foi possível salvar o status de pagamento.");
-            return;
-        }
-        const eFinalizado = hasUniformes ? (statusPago && statusRetirado) : statusPago;
+
+        const isPayment = type === 'pagamento';
+        const newPago = isPayment ? !pedido.Pago : statusPago;
+        const newRetirado = !isPayment ? !pedido.Retirado : statusRetirado;
+
+        await updateStatusPagamento(pedido.id_venda, newPago);
+
+        const eFinalizado = hasUniformes ? (newPago && newRetirado) : newPago;
         await updateCompraFinalizada(pedido.id_venda, eFinalizado);
-        alert("Status de pagamento salvo!");
+
+        alert(`Status de ${type} salvo!`);
         await carregarDetalhes();
     };
 
-    const handleSalvarRetirada = async () => {
-        if (!pedido) return;
-        const eFinalizado = statusPago && statusRetirado;
-        await updateCompraFinalizada(pedido.id_venda, eFinalizado);
-        alert("Status de retirada salvo!");
-        await carregarDetalhes();
-    };
 
     const handleDelete = async () => {
         if (!pedido) return;
@@ -125,68 +121,94 @@ export default function DetalhesPedido() {
             <div className={`${styles.circle} ${styles.circleTwo}`} />
             <div className={`${styles.circle} ${styles.circleThree}`} />
             <div className={`${styles.circle} ${styles.circleFour}`} />
-            <div className={styles.scrollContainer}>
-                <div className={styles.card}>
-                    <header className={styles.header}>
-                        <Link to="/pedidos" className={styles.backButton}><FaArrowLeft size={24} /></Link>
-                        <FaClipboardList size={30} className={styles.headerIcon} />
-                        <h1 className={styles.headerTitle}>Pedidos</h1>
-                        <div style={{ flex: 1 }} />
-                        <button className={styles.deleteButton} onClick={handleDelete}>
-                            <FaTrashAlt size={22} color="#E53935" />
-                        </button>
-                    </header>
-                    <h2 className={styles.clientName}>{pedido.Clientes.Nome}</h2>
-                    
-                    <table className={styles.table}>
-                        <tbody>
-                            {itensPedido.map(item => <ItemRow key={item.id} item={item} />)}
-                        </tbody>
-                    </table>
 
-                    <div className={styles.section}>
-                        <div>
-                            <p className={styles.sectionTitle}>Pagamento:</p>
-                            <button className={styles.radioOption} onClick={() => setStatusPago(true)}>
-                                {statusPago ? <FaCheckCircle size={20} color='#5C8E8B' /> : <FaCircle size={20} color='#DDD' />}
-                                <span className={styles.radioText}>Pago</span>
-                            </button>
-                            <button className={styles.radioOption} onClick={() => setStatusPago(false)}>
-                                {!statusPago ? <FaCheckCircle size={20} color='#5C8E8B' /> : <FaCircle size={20} color='#DDD' />}
-                                <span className={styles.radioText}>Não pago</span>
+            <header className={styles.header}>
+                <Link to="/pedidos" className={styles.backButton}><FaArrowLeft size={24} /></Link>
+                <FaClipboardList size={30} className={styles.headerIcon} />
+                <h1 className={styles.headerTitle}>Detalhes do Pedido</h1>
+            </header>
+
+            <div className={styles.contentContainer}>
+                <div className={styles.card}>
+                    <div className={styles.infoColumn}>
+                        <div className={styles.clientHeader}>
+                            <h2 className={styles.clientName}>{pedido.Clientes.Nome}</h2>
+                            <button className={`${styles.button} ${styles.deleteButtonMobile}`} onClick={handleDelete}>
+                                <FaTrash />
                             </button>
                         </div>
-                        <button className={styles.saveButton} onClick={handleSalvarPagamento}><FaSave size={28} /></button>
+
+                        <div className={styles.tableWrapper}>
+                            <table className={styles.table}>
+                                <thead>
+                                    <tr>
+                                        <th className={styles.tableHeader}>Qtd</th>
+                                        <th className={styles.tableHeader}>Produto</th>
+                                        <th className={styles.tableHeader}>Detalhe</th>
+                                        <th className={`${styles.tableHeader} ${styles.priceCell}`}>Preço</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {itensPedido.map(item => <ItemRow key={item.id} item={item} />)}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
 
-                    {hasUniformes && (
-                        <div className={styles.section}>
-                            <div>
-                                <p className={styles.sectionTitle}>Retirada:</p>
-                                <button className={styles.radioOption} onClick={() => setStatusRetirado(true)}>
-                                    {statusRetirado ? <FaCheckCircle size={20} color='#5C8E8B' /> : <FaCircle size={20} color='#DDD' />}
-                                    <span className={styles.radioText}>Retirou</span>
-                                </button>
-                                <button className={styles.radioOption} onClick={() => setStatusRetirado(false)}>
-                                    {!statusRetirado ? <FaCheckCircle size={20} color='#5C8E8B' /> : <FaCircle size={20} color='#DDD' />}
-                                    <span className={styles.radioText}>Ainda não retirou</span>
+                    <div className={styles.actionsColumn}>
+                        <div className={styles.actionCard}>
+                            <div className={styles.section}>
+                                <h3 className={styles.sectionTitle}>Status do Pagamento</h3>
+                                <div className={styles.radioGroup}>
+                                    <button className={styles.radioOption} onClick={() => setStatusPago(true)}>
+                                        {statusPago ? <FaCheckCircle size={22} color='#5C8E8B' /> : <FaRegCircle size={22} color='#AAA' />}
+                                        <span className={styles.radioText}>Pago</span>
+                                    </button>
+                                    <button className={styles.radioOption} onClick={() => setStatusPago(false)}>
+                                        {!statusPago ? <FaCheckCircle size={22} color='#5C8E8B' /> : <FaRegCircle size={22} color='#AAA' />}
+                                        <span className={styles.radioText}>Não pago</span>
+                                    </button>
+                                </div>
+                                <button className={`${styles.button} ${styles.saveButton}`} onClick={() => handleSalvarStatus('pagamento')}>
+                                    <FaSave /> Salvar Pagamento
                                 </button>
                             </div>
-                            <button className={styles.saveButton} onClick={handleSalvarRetirada}><FaSave size={28} /></button>
-                        </div>
-                    )}
 
-                    <footer className={styles.footer}>
-                        <div>
-                            <p className={styles.footerLabel}>Forma de pagamento:</p>
-                            <p className={styles.footerValue}>{pedido.Forma_de_pagamento}</p>
+                            {hasUniformes && (
+                                <div className={styles.section}>
+                                    <h3 className={styles.sectionTitle}>Status da Retirada</h3>
+                                    <div className={styles.radioGroup}>
+                                        <button className={styles.radioOption} onClick={() => setStatusRetirado(true)}>
+                                            {statusRetirado ? <FaCheckCircle size={22} color='#5C8E8B' /> : <FaRegCircle size={22} color='#AAA' />}
+                                            <span className={styles.radioText}>Retirado</span>
+                                        </button>
+                                        <button className={styles.radioOption} onClick={() => setStatusRetirado(false)}>
+                                            {!statusRetirado ? <FaCheckCircle size={22} color='#5C8E8B' /> : <FaRegCircle size={22} color='#AAA' />}
+                                            <span className={styles.radioText}>Não retirado</span>
+                                        </button>
+                                    </div>
+                                    <button className={`${styles.button} ${styles.saveButton}`} onClick={() => handleSalvarStatus('retirada')}>
+                                        <FaSave /> Salvar Retirada
+                                    </button>
+                                </div>
+                            )}
                         </div>
-                        <img src={ReciboIcon} alt="Ícone de recibo" className={styles.reciboIcon} />
-                        <div className={styles.totalSection}>
-                            <p className={styles.footerLabel}>Total</p>
-                            <p className={styles.totalValue}>{pedido.Total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
-                        </div>
-                    </footer>
+
+                        <footer className={styles.footer}>
+                            <div className={styles.footerInfo}>
+                                <p className={styles.footerLabel}>Forma de pagamento</p>
+                                <p className={styles.footerValue}>{pedido.Forma_de_pagamento}</p>
+                            </div>
+                            <img src={ReciboIcon} alt="Ícone de recibo" className={styles.reciboIcon} />
+                            <div className={styles.totalSection}>
+                                <p className={styles.footerLabel}>Total do Pedido</p>
+                                <p className={styles.totalValue}>{pedido.Total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
+                            </div>
+                        </footer>
+                        <button className={`${styles.button} ${styles.deleteButtonDesktop}`} onClick={handleDelete}>
+                            <FaTrash /> Deletar Pedido
+                        </button>
+                    </div>
                 </div>
             </div>
         </main>

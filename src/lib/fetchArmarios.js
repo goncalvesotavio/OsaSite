@@ -1,4 +1,4 @@
-import { supabase } from './supabase.js'; 
+import { supabase } from './supabase.js';
 
 export async function fetchArmarios() {
     const { data, error } = await supabase
@@ -133,4 +133,30 @@ export async function marcarArmarioConsertado(n_armario) {
 
     if (error) console.error('Erro ao marcar armário como consertado:', error);
     return { error };
+}
+
+export async function buscarStatusArmarios() {
+    const { data, error } = await supabase
+        .from('Armários')
+        .select('N_armario, Disponivel, Funcional');
+
+    if (error) {
+        console.error("Erro ao buscar status dos armários:", error);
+        return [];
+    }
+
+    const processedData = data.map(armario => {
+        let status = 'Disponível';
+        if (armario.Funcional === false) {
+            status = 'Quebrado';
+        } else if (armario.Disponivel === false) {
+            status = 'Alugado';
+        }
+        return {
+            N_armario: armario.N_armario,
+            Status: status,
+        };
+    });
+
+    return processedData;
 }

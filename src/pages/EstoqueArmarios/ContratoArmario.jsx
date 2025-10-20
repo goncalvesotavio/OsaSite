@@ -24,14 +24,14 @@ export default function ContratoArmario() {
                 <img src={ArmarioIcon} alt="Ícone de Armários" className={styles.headerIcon} />
                 <h1 className={styles.headerTitle}>Contrato do Armário</h1>
             </header>
-            
+
             <div className={styles.content}>
                 <h2 className={styles.subtitle}>Contrato de Compra Digitalizado</h2>
-                <div className={styles.webviewContainer}>
+                <div className={styles.iframeContainer}>
                     {url ? (
                         <iframe
                             src={url}
-                            className={styles.webview}
+                            className={styles.iframe}
                             title="Contrato de Compra"
                         />
                     ) : (

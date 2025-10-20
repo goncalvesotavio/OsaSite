@@ -1,18 +1,19 @@
 .safeArea {
-    flex: 1;
     background-color: #F4F1E9;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
-    height: 100vh;
     position: relative;
     overflow: hidden;
+    width: 100%;
 }
 
 .circle {
     position: absolute;
-    opacity: 0.7;
+    opacity: 0.6;
     z-index: 0;
     border-radius: 50%;
+    filter: blur(20px);
 }
 
 .circleOne {
@@ -50,25 +51,31 @@
 .header {
     display: flex;
     align-items: center;
-    padding: 20px 20px 10px 20px;
+    padding: 1.5rem 2rem;
     z-index: 1;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 .backButton {
-    margin-right: 15px;
-    padding: 5px;
     color: #333;
-    display: flex;
-    align-items: center;
+    transition: transform 0.2s ease;
+    padding: 0.5rem;
+    margin-right: 0.75rem;
+}
+
+.backButton:hover {
+    transform: scale(1.1);
 }
 
 .headerIcon {
-    margin-right: 10px;
+    margin-right: 0.75rem;
     color: #333;
 }
 
 .headerTitle {
-    font-size: 24px;
+    font-size: clamp(1.5rem, 4vw, 2rem);
     font-weight: bold;
     color: #333;
     margin: 0;
@@ -78,45 +85,72 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
-    padding: 0 20px;
+    padding: 17rem 2rem 2rem;
     z-index: 1;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
-.reportButton {
+.cardGrid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    width: 100%;
+    max-width: 450px;
+}
+
+.reportCard {
     display: flex;
+    flex-direction: column;
     align-items: center;
+    justify-content: center;
+    gap: 1rem;
     background-color: #FFFFFF;
-    width: 90%;
-    max-width: 400px;
-    padding: 22px 30px;
+    min-height: 180px;
+    padding: 1.5rem;
     border-radius: 20px;
-    margin-bottom: 25px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border: 1px solid #EAEAEA;
     text-decoration: none;
-    color: inherit;
+    color: #333;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
 
-.reportButtonImageIcon {
-    width: 45px;
-    height: 45px;
-    margin-right: 20px;
+.reportCard:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.cardIconImage {
+    width: 60px;
+    height: 60px;
     object-fit: contain;
 }
 
-.reportButtonFontIcon {
-    width: 45px;
-    margin-right: 20px;
-    text-align: center;
+.cardIconFont {
+    width: 60px;
+    height: 60px;
     color: #333;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.reportButtonText {
-    font-size: 20px;
+.cardText {
+    font-size: 1.25rem;
     font-weight: 600;
-    color: #333;
+}
+
+@media (min-width: 768px) {
+    .cardGrid {
+        grid-template-columns: repeat(3, 1fr);
+        max-width: 1000px;
+        gap: 2rem;
+    }
+
+    .reportCard {
+        min-height: 220px;
+    }
 }

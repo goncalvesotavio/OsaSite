@@ -1,40 +1,46 @@
-.safeArea,
+.safeArea {
+    background-color: #F4F1E9;
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow-x: hidden;
+}
+
 .loadingContainer {
     background-color: #F4F1E9;
     min-height: 100vh;
     display: flex;
-    flex-direction: column;
-}
-
-.loadingContainer {
     justify-content: center;
     align-items: center;
 }
 
 .spinner {
-    width: 48px;
-    height: 48px;
-    border: 5px solid #FFF;
-    border-bottom-color: #5C8E8B;
+    width: 50px;
+    height: 50px;
+    border: 6px solid rgba(0, 0, 0, 0.1);
+    border-left-color: #5C8E8B;
     border-radius: 50%;
     animation: rotation 1s linear infinite;
 }
 
 @keyframes rotation {
-    0% {
+    from {
         transform: rotate(0deg);
     }
 
-    100% {
+    to {
         transform: rotate(360deg);
     }
 }
 
 .circle {
     position: absolute;
-    opacity: 0.7;
+    opacity: 0.6;
     z-index: 0;
     border-radius: 50%;
+    filter: blur(20px);
 }
 
 .circleOne {
@@ -72,107 +78,155 @@
 .header {
     display: flex;
     align-items: center;
-    padding: 20px 20px 10px;
+    padding: 1.5rem 2rem;
     z-index: 1;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 .backButton {
-    margin-right: 15px;
-    padding: 5px;
     color: #333;
+    transition: transform 0.2s ease;
+}
+
+.backButton:hover {
+    transform: scale(1.1);
 }
 
 .headerIcon {
     width: 35px;
     height: 35px;
-    margin-right: 10px;
+    margin: 0 0.75rem;
 }
 
 .headerTitle {
-    font-size: 24px;
+    font-size: clamp(1.5rem, 4vw, 2rem);
     font-weight: bold;
     color: #333;
     margin: 0;
 }
 
-.scrollContainer {
+.contentContainer {
     flex: 1;
     overflow-y: auto;
-    padding: 0 20px 40px;
+    padding: 0 2rem 2.5rem;
     z-index: 1;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 .card {
-    background-color: #FFF;
+    background-color: #FFFFFF;
     border-radius: 20px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border: 1px solid #EAEAEA;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    padding: 1.5rem;
+}
+
+.detailsColumn,
+.actionsColumn {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.actionsColumn {
+    border-top: 1px solid #EEE;
+    padding-top: 1.5rem;
 }
 
 .imageContainer {
-    background-color: #F0F0F0;
-    padding: 15px;
+    background-color: #fdfdfd;
+    padding: 1rem;
     display: flex;
     justify-content: center;
     align-items: center;
+    border-radius: 15px;
+    border: 1px solid #eee;
 }
 
 .mainImage {
-    width: 80%;
-    height: 200px;
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+    aspect-ratio: 1 / 1;
     object-fit: contain;
 }
 
 .uniformeTitle {
-    font-size: 24px;
+    font-size: clamp(1.5rem, 5vw, 2.25rem);
     font-weight: bold;
     color: #333;
     text-align: center;
-    margin: 15px 0;
+    margin: 0;
 }
 
 .estoqueContainer {
     display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    padding: 15px 20px;
-    border-top: 1px solid #EEE;
-    border-bottom: 1px solid #EEE;
+    flex-direction: column;
+    padding: 1rem;
+    border-radius: 10px;
+    background-color: #f9f9f9;
 }
 
 .estoqueList {
-    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 0.5rem;
+    margin-bottom: 1rem;
 }
 
 .estoqueItem {
-    font-size: 18px;
+    font-size: 1.1rem;
     color: #444;
-    margin: 0 0 5px 0;
+    margin: 0;
+    display: flex;
+    justify-content: space-between;
+    padding: 0.25rem 0.5rem;
+    border-radius: 5px;
+    background-color: #fff;
 }
 
 .estoqueTotal {
-    font-size: 20px;
+    font-size: 1.25rem;
     font-weight: bold;
     color: #333;
-}
-
-.actionsContainer {
-    padding: 20px;
+    text-align: right;
+    border-top: 2px solid #5C8E8B;
+    padding-top: 0.75rem;
+    margin-top: 0.5rem;
 }
 
 .actionsTitle {
-    font-size: 16px;
-    color: #555;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
     text-align: center;
-    margin-bottom: 15px;
+    margin-bottom: 0;
+}
+
+.subTitle {
+    font-size: 1rem;
+    color: #555;
+    font-weight: 500;
+    text-align: center;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #ddd;
 }
 
 .radioGroup {
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     align-items: center;
     flex-wrap: wrap;
-    margin-bottom: 20px;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
 }
 
 .radioOption {
@@ -181,56 +235,166 @@
     background: none;
     border: none;
     cursor: pointer;
-    padding: 5px;
+    padding: 0.5rem;
+    border-radius: 8px;
+    transition: background-color 0.2s ease;
+}
+
+.radioOption:hover {
+    background-color: #f0f0f0;
 }
 
 .radioText {
-    margin-left: 8px;
-    font-size: 16px;
+    margin-left: 0.5rem;
+    font-size: 1rem;
     font-weight: 500;
+}
+
+.newSizeWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+}
+
+.newSizeWrapper label {
+    font-weight: 500;
+    color: #333;
 }
 
 .controlsContainer {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
+    gap: 0.5rem;
 }
 
 .controlButton {
-    width: 50px;
-    height: 50px;
-    border-radius: 25px;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
     background-color: #8C5F54;
+    color: white;
     display: flex;
     justify-content: center;
     align-items: center;
     border: none;
     cursor: pointer;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.controlButton:hover {
+    background-color: #7a5247;
+}
+
+.controlButton:active {
+    transform: scale(0.95);
 }
 
 .quantityInput {
     border: 1px solid #CCC;
     border-radius: 10px;
-    flex: 1;
-    margin: 0 10px;
-    height: 50px;
+    width: 100%;
+    max-width: 100px;
+    height: 45px;
     text-align: center;
-    font-size: 20px;
+    font-size: 1.25rem;
     font-weight: bold;
     color: #333;
+    -moz-appearance: textfield;
+}
+
+.quantityInput::-webkit-outer-spin-button,
+.quantityInput::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.input {
+    border: 1px solid #CCC;
+    border-radius: 10px;
+    height: 45px;
+    padding: 0 1rem;
+    font-size: 1rem;
+    width: 100%;
+}
+
+.finalActions {
+    margin-top: 1rem;
+}
+
+.finalButtonsWrapper {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.button {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+    opacity: 0.7;
+}
+
+.fullWidthButton {
+    width: 100%;
 }
 
 .saveButton {
-    width: 60px;
-    height: 50px;
-    border-radius: 10px;
     background-color: #5C8E8B;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: none;
-    cursor: pointer;
-    margin-left: 10px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    color: #FFF;
+}
+
+.saveButton:hover {
+    background-color: #4a716f;
+}
+
+.deleteButton {
+    background-color: #c94c4c;
+    color: #FFF;
+}
+
+.deleteButton:hover {
+    background-color: #a13c3c;
+}
+
+@media (min-width: 992px) {
+    .card {
+        grid-template-columns: 40% 1fr;
+        padding: 2.5rem;
+    }
+
+    .actionsColumn {
+        border-top: none;
+        padding-top: 0;
+        border-left: 1px solid #EEE;
+        padding-left: 2rem;
+    }
+
+    .circleFour {
+        bottom: 0px;
+    }
 }

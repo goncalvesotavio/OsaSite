@@ -41,8 +41,12 @@ export default function UniformesDetalhe() {
         carregarDetalhes();
     }, [id_uniforme, dataInicio, dataFim]);
 
-    const valorTotalGeral = useMemo(() => {
-        return detalhesVenda.reduce((soma, item) => soma + item.valorTotal, 0);
+    const { valorTotalGeral, totalPecasGeral } = useMemo(() => {
+        return detalhesVenda.reduce((soma, item) => {
+            soma.valorTotalGeral += item.valorTotal;
+            soma.totalPecasGeral += item.quantidade;
+            return soma;
+        }, { valorTotalGeral: 0, totalPecasGeral: 0 });
     }, [detalhesVenda]);
 
     if (loading) {
@@ -59,50 +63,62 @@ export default function UniformesDetalhe() {
             <div className={`${styles.circle} ${styles.circleFour}`} />
 
             <header className={styles.header}>
-                <Link to={`/relatorio-vendas/uniformes?${backLinkParams.toString()}`} className={styles.backButton}>
+                <Link to={`/relatorio-vendas/uniformes-resultado?${backLinkParams.toString()}`} className={styles.backButton}>
                     <FaArrowLeft size={24} />
                 </Link>
                 <img src={UniformeIcon} alt="Ícone de Uniformes" className={styles.headerIcon} />
                 <h1 className={styles.headerTitle}>Detalhe do Uniforme</h1>
             </header>
 
-            <div className={styles.scrollContainer}>
+            <div className={styles.contentContainer}>
                 <div className={styles.card}>
-                    <div className={styles.imageContainer}>
-                        <img src={img} alt={nome} className={styles.mainImage} />
-                    </div>
-                    <h2 className={styles.uniformeTitle}>{nome}</h2>
-                    <p className={styles.uniformePrice}>
-                        {Number(precoBase).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
-                    </p>
-
-                    <div className={styles.tableContainer}>
-                        <table className={styles.table}>
-                            <thead>
-                                <tr className={styles.tableHeader}>
-                                    <th>Tamanho</th>
-                                    <th style={{ textAlign: 'center' }}>Quantidade</th>
-                                    <th style={{ textAlign: 'right' }}>Valor Total</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {detalhesVenda.map(item => (
-                                    <tr key={item.tamanho} className={styles.tableRow}>
-                                        <td>{item.tamanho}</td>
-                                        <td style={{ textAlign: 'center' }}>{item.quantidade}</td>
-                                        <td style={{ textAlign: 'right' }}>
-                                            {item.valorTotal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <div className={styles.footer}>
-                        <p className={styles.footerText}>
-                            Valor total: {valorTotalGeral.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+                    <div className={styles.summaryColumn}>
+                        <div className={styles.imageContainer}>
+                            <img src={img} alt={nome} className={styles.mainImage} />
+                        </div>
+                        <h2 className={styles.uniformeTitle}>{nome}</h2>
+                        <p className={styles.uniformePrice}>
+                            Preço Base: {Number(precoBase).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
                         </p>
+                    </div>
+
+                    <div className={styles.detailsColumn}>
+                        <h3 className={styles.detailsTitle}>Vendas por Tamanho</h3>
+                        <div className={styles.tableContainer}>
+                            <table className={styles.table}>
+                                <thead>
+                                    <tr>
+                                        <th>Tamanho</th>
+                                        <th>Quantidade</th>
+                                        <th>Valor Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {detalhesVenda.map(item => (
+                                        <tr key={item.tamanho} className={styles.tableRow}>
+                                            <td data-label="Tamanho">{item.tamanho}</td>
+                                            <td data-label="Quantidade">{item.quantidade}</td>
+                                            <td data-label="Valor Total">
+                                                {item.valorTotal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div className={styles.footer}>
+                            <div className={styles.footerItem}>
+                                <span className={styles.footerLabel}>Total de Peças</span>
+                                <span className={styles.footerValue}>{totalPecasGeral}</span>
+                            </div>
+                            <div className={styles.footerItem}>
+                                <span className={styles.footerLabel}>Valor Total</span>
+                                <span className={`${styles.footerValue} ${styles.totalValue}`}>
+                                    {valorTotalGeral.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+                                </span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

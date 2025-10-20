@@ -11,16 +11,16 @@ import ArmarioIcon from '../../assets/armarios gestao.png';
 const VendaItem = ({ item }) => {
     const iconSource = item.tipo === 'uniforme' ? UniformeIcon : ArmarioIcon;
     return (
-        <div className={styles.itemRow}>
-            <img src={iconSource} alt={item.tipo} className={styles.itemIcon} />
-            <div className={styles.itemDetails}>
-                <p className={styles.itemText}>{item.descricao}</p>
-                <p className={styles.itemDate}>{new Date(item.data).toLocaleDateString('pt-BR', { timeZone: 'UTC' })}</p>
-            </div>
-            <p className={styles.itemValue}>
+        <tr className={styles.tableRow}>
+            <td data-label="Item" className={styles.itemCell}>
+                <img src={iconSource} alt={item.tipo} className={styles.itemIcon} />
+                <span>{item.descricao}</span>
+            </td>
+            <td data-label="Data">{new Date(item.data).toLocaleDateString('pt-BR', { timeZone: 'UTC' })}</td>
+            <td data-label="Valor">
                 {item.valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
-            </p>
-        </div>
+            </td>
+        </tr>
     );
 };
 
@@ -28,7 +28,7 @@ export default function GeralResultado() {
     const [searchParams] = useSearchParams();
     const dataInicio = searchParams.get('dataInicio');
     const dataFim = searchParams.get('dataFim');
-    
+
     const [itensRelatorio, setItensRelatorio] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -46,8 +46,9 @@ export default function GeralResultado() {
                 id: `u-${v.id}`,
                 data: v['Vendas-2025'].Data,
                 tipo: 'uniforme',
-                descricao: v.Uniformes.Nome,
-                valor: v.Preco_total
+                descricao: `${v.Qtd}x ${v.Uniformes.Nome}`,
+                valor: v.Preco_total,
+                quantidade: v.Qtd,
             }));
 
             const itensArmarios = vendasArmarios.map(v => ({
@@ -55,9 +56,10 @@ export default function GeralResultado() {
                 data: v['Vendas-2025'].Data,
                 tipo: 'armario',
                 descricao: `Armário Nº ${v.N_armario}`,
-                valor: v.Armários.preco
+                valor: v.Armários.preco,
+                quantidade: 1,
             }));
-            
+
             const todosOsItens = [...itensUniformes, ...itensArmarios];
             todosOsItens.sort((a, b) => new Date(b.data).getTime() - new Date(a.data).getTime());
 
@@ -67,11 +69,27 @@ export default function GeralResultado() {
         carregarRelatorio();
     }, [dataInicio, dataFim]);
 
-    const valorTotalArrecadado = useMemo(() => {
-        return itensRelatorio.reduce((soma, item) => soma + item.valor, 0);
+    const stats = useMemo(() => {
+        return itensRelatorio.reduce((acc, item) => {
+            if (item.tipo === 'uniforme') {
+                acc.totalUniformes += item.valor;
+                acc.pecasUniformes += item.quantidade;
+            } else if (item.tipo === 'armario') {
+                acc.totalArmarios += item.valor;
+                acc.pecasArmarios += item.quantidade;
+            }
+            acc.totalGeral += item.valor;
+            return acc;
+        }, {
+            totalUniformes: 0,
+            totalArmarios: 0,
+            totalGeral: 0,
+            pecasUniformes: 0,
+            pecasArmarios: 0
+        });
     }, [itensRelatorio]);
 
-    const formatarData = (dataString) => new Date(dataString).toLocaleDateString('pt-BR', {timeZone: 'UTC'});
+    const formatarData = (dataString) => new Date(dataString).toLocaleDateString('pt-BR', { timeZone: 'UTC' });
 
     if (loading) {
         return <main className={styles.loadingContainer}><div className={styles.spinner}></div></main>;
@@ -83,23 +101,62 @@ export default function GeralResultado() {
             <div className={`${styles.circle} ${styles.circleTwo}`} />
             <div className={`${styles.circle} ${styles.circleThree}`} />
             <div className={`${styles.circle} ${styles.circleFour}`} />
-            
+
             <header className={styles.header}>
                 <Link to="/relatorio-vendas" className={styles.backButton}><FaArrowLeft size={24} /></Link>
                 <FiDollarSign size={30} className={styles.headerIcon} />
                 <h1 className={styles.headerTitle}>Relatório Geral</h1>
             </header>
 
-            <div className={styles.summaryContainer}>
-                <p className={styles.summaryText}>De: <strong>{formatarData(dataInicio)}</strong> até <strong>{formatarData(dataFim)}</strong></p>
-                <p className={styles.summaryTextBold}>Valor total arrecadado: {valorTotalArrecadado.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
-            </div>
+            <div className={styles.contentContainer}>
+                <div className={styles.summaryCard}>
+                    <div className={styles.summaryHeader}>
+                        <p>Resumo do Período</p>
+                        <span>{formatarData(dataInicio)} a {formatarData(dataFim)}</span>
+                    </div>
+                    <div className={styles.summaryStats}>
+                        <div className={styles.statItem}>
+                            <p className={styles.statLabel}>Uniformes Vendidos (peças)</p>
+                            <p className={styles.statValue}>{stats.pecasUniformes}</p>
+                        </div>
+                        <div className={styles.statItem}>
+                            <p className={styles.statLabel}>Total em Uniformes</p>
+                            <p className={styles.statValue}>{stats.totalUniformes.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
+                        </div>
+                        <div className={styles.statItem}>
+                            <p className={styles.statLabel}>Armários Alugados</p>
+                            <p className={styles.statValue}>{stats.pecasArmarios}</p>
+                        </div>
+                        <div className={styles.statItem}>
+                            <p className={styles.statLabel}>Total em Armários</p>
+                            <p className={styles.statValue}>{stats.totalArmarios.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
+                        </div>
+                    </div>
+                    <div className={styles.summaryFooter}>
+                        <p className={styles.statLabel}>Valor Total Arrecadado</p>
+                        <p className={`${styles.statValue} ${styles.totalValue}`}>
+                            {stats.totalGeral.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+                        </p>
+                    </div>
+                </div>
 
-            <div className={styles.listContainer}>
-                <h2 className={styles.listHeader}>Todas as Transações no Período</h2>
-                {itensRelatorio.map((item) => (
-                    <VendaItem key={item.id} item={item} />
-                ))}
+                <div className={styles.listContainer}>
+                    <h2 className={styles.listHeader}>Todas as Transações</h2>
+                    <table className={styles.salesTable}>
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Data</th>
+                                <th>Valor</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {itensRelatorio.map((item) => (
+                                <VendaItem key={item.id} item={item} />
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </main>
     );
