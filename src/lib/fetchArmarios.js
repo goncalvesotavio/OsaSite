@@ -27,6 +27,7 @@ export async function buscarArmario(n_armario) {
             preco: "Preco(R$)",
             Disponivel,
             Funcional,
+            Utilizado,
             Vendas_armários(id_venda, Contrato)
         `)
         .eq('N_armario', n_armario);

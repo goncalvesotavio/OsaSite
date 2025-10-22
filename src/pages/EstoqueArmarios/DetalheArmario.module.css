@@ -180,6 +180,25 @@
     background-color: #F44336;
 }
 
+.usageContainer {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.usageLabel {
+    font-size: 1rem;
+    color: #666;
+}
+
+.usageValue {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #333;
+}
+
 .detailsColumn {
     padding: 2rem;
     border-top: 1px solid #EEE;
@@ -323,9 +342,5 @@
     .detailsColumn {
         border-top: none;
         border-left: 1px solid #EEE;
-    }
-
-    .circleFour {
-        bottom: 0;
     }
 }

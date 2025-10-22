@@ -195,6 +195,10 @@ export default function DetalheArmario() {
                             <div className={`${styles.statusBadge} ${statusInfo.style}`}>
                                 {statusInfo.text}
                             </div>
+                            <div className={styles.usageContainer}>
+                                <span className={styles.usageLabel}>Utilizado:</span>
+                                <span className={styles.usageValue}>{armario.Utilizado ? 'Sim' : 'Não'}</span>
+                            </div>
                         </div>
                     </div>
 
